@@ -10,16 +10,16 @@ export default async function PromoteCoursesPage() {
     .orderBy(desc(courses.year), asc(courses.name));
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-semibold">Promoción de curso (cambio de año)</h1>
-      <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
+    <div className="p-4 sm:p-8">
+      <h1 className="text-xl font-semibold text-brand-900 dark:text-white">Promoción de curso (cambio de año)</h1>
+      <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-brand-300">
         Mueve a todos los estudiantes activos de un curso a otro (ej. de
         &quot;1ro Medio A 2026&quot; a &quot;2do Medio A 2027&quot;). Crea
         primero el curso de destino en la sección Cursos si no existe.
       </p>
 
       {allCourses.length < 2 ? (
-        <p className="mt-6 text-sm text-zinc-500">Necesitas al menos dos cursos creados.</p>
+        <p className="mt-6 text-sm text-zinc-500 dark:text-brand-300">Necesitas al menos dos cursos creados.</p>
       ) : (
         <div className="mt-6">
           <PromoteForm courses={allCourses} />

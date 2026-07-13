@@ -6,10 +6,10 @@ import { saveAttendanceAction } from "@/app/attendance/[courseId]/[blockNumber]/
 type Student = { id: number; firstName: string; lastName: string };
 type EditableStatus = "presente" | "ausente" | "atraso";
 
-const OPTIONS: { value: EditableStatus; label: string }[] = [
-  { value: "presente", label: "Presente" },
-  { value: "atraso", label: "Atraso" },
-  { value: "ausente", label: "Ausente" },
+const OPTIONS: { value: EditableStatus; label: string; selectedClass: string }[] = [
+  { value: "presente", label: "Presente", selectedClass: "bg-brand-700 text-white" },
+  { value: "atraso", label: "Atraso", selectedClass: "bg-gold-500 text-brand-950" },
+  { value: "ausente", label: "Ausente", selectedClass: "bg-red-600 text-white" },
 ];
 
 export default function AttendanceGrid({
@@ -56,27 +56,30 @@ export default function AttendanceGrid({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm text-zinc-500">
+      <p className="text-sm text-zinc-500 dark:text-brand-300">
         Todos parten como &quot;Presente&quot;. Solo marca a quienes falten o
         lleguen atrasados.
       </p>
 
-      <ul className="flex max-w-xl flex-col divide-y rounded border">
+      <ul className="flex max-w-xl flex-col divide-y divide-zinc-200 rounded-lg border border-zinc-200 dark:divide-brand-800 dark:border-brand-800">
         {editableStudents.map((s) => (
-          <li key={s.id} className="flex items-center justify-between p-3 text-sm">
-            <span>
+          <li
+            key={s.id}
+            className="flex flex-col gap-2 p-3 text-sm sm:flex-row sm:items-center sm:justify-between"
+          >
+            <span className="text-brand-900 dark:text-white">
               {s.lastName}, {s.firstName}
             </span>
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               {OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
                   type="button"
                   onClick={() => setStatuses((prev) => ({ ...prev, [s.id]: opt.value }))}
-                  className={`rounded px-2 py-1 text-xs ${
+                  className={`rounded px-2.5 py-1.5 text-xs font-medium ${
                     statuses[s.id] === opt.value
-                      ? "bg-black text-white dark:bg-white dark:text-black"
-                      : "border text-zinc-600 dark:text-zinc-400"
+                      ? opt.selectedClass
+                      : "border border-zinc-300 text-zinc-600 dark:border-brand-700 dark:text-brand-200"
                   }`}
                 >
                   {opt.label}
@@ -89,10 +92,10 @@ export default function AttendanceGrid({
 
       {justifiedStudents.length > 0 && (
         <div>
-          <p className="text-sm font-medium text-zinc-500">
+          <p className="text-sm font-medium text-zinc-500 dark:text-brand-300">
             Ya justificados por inspectoría (no editable aquí):
           </p>
-          <ul className="mt-1 flex flex-col gap-1 text-sm text-zinc-500">
+          <ul className="mt-1 flex flex-col gap-1 text-sm text-zinc-500 dark:text-brand-300">
             {justifiedStudents.map((s) => (
               <li key={s.id}>
                 {s.lastName}, {s.firstName}
@@ -102,15 +105,11 @@ export default function AttendanceGrid({
         </div>
       )}
 
-      <div className="flex items-center gap-3">
-        <button
-          onClick={handleSave}
-          disabled={pending}
-          className="w-fit rounded-md bg-black px-4 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-black"
-        >
+      <div className="flex flex-wrap items-center gap-3">
+        <button onClick={handleSave} disabled={pending} className="btn-primary">
           {pending ? "Guardando..." : `Guardar (${exceptionCount} excepciones)`}
         </button>
-        {message && <span className="text-sm">{message}</span>}
+        {message && <span className="text-sm text-brand-900 dark:text-brand-100">{message}</span>}
       </div>
     </div>
   );

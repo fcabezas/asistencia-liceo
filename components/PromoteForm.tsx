@@ -31,7 +31,7 @@ export default function PromoteForm({ courses }: { courses: Course[] }) {
           name="fromCourseId"
           value={fromCourseId}
           onChange={(e) => setFromCourseId(Number(e.target.value))}
-          className="mt-1 w-full rounded border px-2 py-1"
+          className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
         >
           {courses.map((c) => (
             <option key={c.id} value={c.id}>
@@ -46,7 +46,7 @@ export default function PromoteForm({ courses }: { courses: Course[] }) {
           name="toCourseId"
           value={toCourseId}
           onChange={(e) => setToCourseId(Number(e.target.value))}
-          className="mt-1 w-full rounded border px-2 py-1"
+          className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
         >
           {courses.map((c) => (
             <option key={c.id} value={c.id}>
@@ -58,7 +58,7 @@ export default function PromoteForm({ courses }: { courses: Course[] }) {
       <button
         type="submit"
         disabled={pending}
-        className="mt-2 w-fit rounded-md bg-black px-4 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-black"
+        className="btn-primary mt-2 w-fit"
       >
         {pending ? "Promoviendo..." : "Promover estudiantes"}
       </button>

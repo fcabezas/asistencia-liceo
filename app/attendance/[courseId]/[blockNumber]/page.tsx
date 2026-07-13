@@ -94,11 +94,11 @@ export default async function AttendancePage({
   const justifiedStudentIds = activeJustifications.map((j) => j.studentId);
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-semibold">
+    <div className="p-4 sm:p-8">
+      <h1 className="text-xl font-semibold text-brand-900 dark:text-white">
         {course?.name} · Bloque {blockNumber} · {subject?.name}
       </h1>
-      <p className="mt-1 text-sm text-zinc-500">{date}</p>
+      <p className="mt-1 text-sm text-zinc-500 dark:text-brand-300">{date}</p>
 
       <div className="mt-6">
         <AttendanceGrid

@@ -6,10 +6,10 @@ export default async function AdminHome() {
   if (!session?.user || session.user.role !== "admin") redirect("/login");
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-semibold">Administración</h1>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-        Gestión de estudiantes, cursos, horario, asignaciones y usuarios (Fase 2).
+    <div className="p-4 sm:p-8">
+      <h1 className="text-xl font-semibold text-brand-900 dark:text-white">Administración</h1>
+      <p className="mt-2 text-zinc-600 dark:text-brand-300">
+        Gestión de estudiantes, cursos, horario, asignaciones y usuarios.
       </p>
     </div>
   );

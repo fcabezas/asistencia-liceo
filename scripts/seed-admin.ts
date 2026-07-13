@@ -29,7 +29,7 @@ async function main() {
   if (!settings) {
     await db.insert(schoolSettings).values({
       id: 1,
-      name: "Liceo",
+      name: "Liceo Eduardo Charme",
       currentYear: new Date().getFullYear(),
     });
     console.log("school_settings inicializado.");

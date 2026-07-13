@@ -39,24 +39,27 @@ export default async function TeacherDashboard() {
     .orderBy(asc(scheduleBlocks.blockNumber));
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-semibold">Mis bloques de hoy</h1>
-      <p className="mt-1 text-sm text-zinc-500">{date}</p>
+    <div className="p-4 sm:p-8">
+      <h1 className="text-xl font-semibold text-brand-900 dark:text-white">Mis bloques de hoy</h1>
+      <p className="mt-1 text-sm text-zinc-500 dark:text-brand-300">{date}</p>
 
       {blocks.length === 0 ? (
-        <p className="mt-4 text-zinc-600 dark:text-zinc-400">
+        <p className="mt-4 text-zinc-600 dark:text-brand-200">
           No tienes bloques asignados hoy.
         </p>
       ) : (
-        <ul className="mt-6 flex max-w-lg flex-col gap-2">
+        <ul className="mt-6 flex max-w-lg flex-col gap-3">
           {blocks.map((b) => (
-            <li key={b.id} className="flex items-center justify-between rounded border p-3 text-sm">
+            <li
+              key={b.id}
+              className="flex flex-col gap-3 rounded-lg border border-zinc-200 p-4 text-sm dark:border-brand-800 sm:flex-row sm:items-center sm:justify-between"
+            >
               <div>
-                <p className="font-medium">
+                <p className="font-medium text-brand-900 dark:text-white">
                   Bloque {b.blockNumber} · {b.courseName} · {b.subjectName}
                 </p>
                 {b.startTime && (
-                  <p className="text-zinc-500">
+                  <p className="text-zinc-500 dark:text-brand-300">
                     {b.startTime}
                     {b.endTime ? ` - ${b.endTime}` : ""}
                   </p>
@@ -64,7 +67,7 @@ export default async function TeacherDashboard() {
               </div>
               <Link
                 href={`/attendance/${b.courseId}/${b.blockNumber}?subjectId=${b.subjectId}`}
-                className="rounded-md bg-black px-3 py-1.5 text-white dark:bg-white dark:text-black"
+                className="btn-primary w-full sm:w-auto"
               >
                 Pasar asistencia
               </Link>

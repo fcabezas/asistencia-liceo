@@ -7,9 +7,9 @@ export default async function ImportStudentsPage() {
   if (!session?.user || session.user.role !== "admin") redirect("/login");
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-semibold">Importar estudiantes y apoderados</h1>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+    <div className="p-4 sm:p-8">
+      <h1 className="text-xl font-semibold text-brand-900 dark:text-white">Importar estudiantes y apoderados</h1>
+      <p className="mt-2 text-zinc-600 dark:text-brand-300">
         Sube el CSV exportado de SIGE. Se muestra una previsualización con
         errores antes de confirmar; puedes corregir el archivo y volver a
         subirlo las veces que necesites.

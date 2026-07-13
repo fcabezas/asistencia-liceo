@@ -50,9 +50,9 @@ export default async function JustificationsSearchPage({
       : [];
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-semibold">Justificaciones</h1>
-      <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
+    <div className="p-4 sm:p-8">
+      <h1 className="text-xl font-semibold text-brand-900 dark:text-white">Justificaciones</h1>
+      <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-brand-300">
         Busca un estudiante para registrar una justificación de inasistencia o
         atraso. Queda registro de quién la creó, el motivo y el rango de días
         que cubre.
@@ -63,22 +63,22 @@ export default async function JustificationsSearchPage({
           name="q"
           defaultValue={q}
           placeholder="Buscar por nombre o identificador..."
-          className="w-72 rounded border px-2 py-1"
+          className="w-72 rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
         />
-        <button type="submit" className="rounded border px-3 py-1">
+        <button type="submit" className="btn-secondary">
           Buscar
         </button>
       </form>
 
-      {q && rows.length === 0 && <p className="mt-4 text-sm text-zinc-500">Sin resultados.</p>}
+      {q && rows.length === 0 && <p className="mt-4 text-sm text-zinc-500 dark:text-brand-300">Sin resultados.</p>}
 
-      <ul className="mt-6 flex max-w-xl flex-col divide-y rounded border">
+      <ul className="mt-6 flex max-w-xl flex-col divide-y divide-zinc-200 rounded-lg border border-zinc-200 dark:divide-brand-800 dark:border-brand-800">
         {rows.map((r) => (
           <li key={r.id} className="flex items-center justify-between p-3 text-sm">
             <span>
               {r.lastName}, {r.firstName} · {r.courseName} · {r.identifier}
             </span>
-            <Link href={`/inspector/justifications/${r.id}`} className="text-blue-600 underline">
+            <Link href={`/inspector/justifications/${r.id}`} className="link-action">
               Justificar
             </Link>
           </li>

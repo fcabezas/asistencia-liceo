@@ -65,7 +65,7 @@ export default function ImportStudentsForm() {
           guardian_email)
         </label>
         <input type="file" accept=".csv,text/csv" onChange={handleFile} />
-        {fileName && <p className="text-sm text-zinc-500">Archivo: {fileName}</p>}
+        {fileName && <p className="text-sm text-zinc-500 dark:text-brand-300">Archivo: {fileName}</p>}
 
         <label className="flex items-center gap-2 text-sm">
           <input
@@ -79,7 +79,7 @@ export default function ImportStudentsForm() {
         <button
           onClick={handlePreview}
           disabled={!csvText || busy}
-          className="w-fit rounded-md bg-black px-4 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-black"
+          className="btn-primary w-fit"
         >
           {busy ? "Procesando..." : "Previsualizar"}
         </button>
@@ -126,13 +126,13 @@ export default function ImportStudentsForm() {
                     <td className="p-2">
                       {r.firstName} {r.lastName}
                       <br />
-                      <span className="text-zinc-500">{r.studentIdentifier}</span>
+                      <span className="text-zinc-500 dark:text-brand-400">{r.studentIdentifier}</span>
                     </td>
                     <td className="p-2">{r.courseName}</td>
                     <td className="p-2">
                       {r.guardianName}
                       <br />
-                      <span className="text-zinc-500">{r.guardianPhone}</span>
+                      <span className="text-zinc-500 dark:text-brand-400">{r.guardianPhone}</span>
                     </td>
                     <td className="p-2">{r.studentAction}</td>
                     <td className="p-2">{r.guardianAction}</td>
@@ -148,7 +148,7 @@ export default function ImportStudentsForm() {
           <button
             onClick={handleConfirm}
             disabled={busy || preview.validCount === 0}
-            className="w-fit rounded-md bg-green-700 px-4 py-2 text-white disabled:opacity-50"
+            className="w-fit rounded-md bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-800 disabled:opacity-50"
           >
             {busy ? "Importando..." : `Confirmar import (${preview.validCount} filas)`}
           </button>

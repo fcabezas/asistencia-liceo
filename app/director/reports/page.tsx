@@ -16,9 +16,9 @@ export default async function DirectorReports({
   const params = await searchParams;
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-semibold">Reportes de asistencia</h1>
-      <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
+    <div className="p-4 sm:p-8">
+      <h1 className="text-xl font-semibold text-brand-900 dark:text-white">Reportes de asistencia</h1>
+      <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-brand-300">
         Vista de solo lectura con estadísticas agregadas por curso y periodo.
       </p>
       <div className="mt-6">

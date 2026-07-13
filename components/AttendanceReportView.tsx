@@ -28,8 +28,8 @@ export default async function AttendanceReportView({
     <div>
       <form method="get" className="flex flex-wrap items-end gap-2 text-sm">
         <div>
-          <label className="block text-xs text-zinc-500">Curso</label>
-          <select name="courseId" defaultValue={courseId} className="rounded border px-2 py-1">
+          <label className="block text-xs text-zinc-500 dark:text-brand-300">Curso</label>
+          <select name="courseId" defaultValue={courseId} className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900">
             {allCourses.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -38,48 +38,52 @@ export default async function AttendanceReportView({
           </select>
         </div>
         <div>
-          <label className="block text-xs text-zinc-500">Desde</label>
-          <input type="date" name="startDate" defaultValue={startDate} className="rounded border px-2 py-1" />
+          <label className="block text-xs text-zinc-500 dark:text-brand-300">Desde</label>
+          <input type="date" name="startDate" defaultValue={startDate} className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" />
         </div>
         <div>
-          <label className="block text-xs text-zinc-500">Hasta</label>
-          <input type="date" name="endDate" defaultValue={endDate} className="rounded border px-2 py-1" />
+          <label className="block text-xs text-zinc-500 dark:text-brand-300">Hasta</label>
+          <input type="date" name="endDate" defaultValue={endDate} className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" />
         </div>
-        <button type="submit" className="rounded border px-3 py-1">
+        <button type="submit" className="btn-secondary">
           Ver
         </button>
       </form>
 
-      <p className="mt-2 text-xs text-zinc-500">
+      <p className="mt-2 text-xs text-zinc-500 dark:text-brand-300">
         Conteo basado en la asistencia de bloque 1 (la que dispara avisos a
         los apoderados), no incluye el detalle de bloques posteriores.
       </p>
 
-      <table className="mt-4 w-full max-w-2xl text-left text-sm">
-        <thead>
-          <tr className="border-b">
-            <th className="p-2">Estudiante</th>
-            <th className="p-2">Presente</th>
-            <th className="p-2">Ausente</th>
-            <th className="p-2">Atraso</th>
-            <th className="p-2">Justificado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {summary.map((s) => (
-            <tr key={s.id} className="border-b">
-              <td className="p-2">
-                {s.lastName}, {s.firstName}
-              </td>
-              <td className="p-2">{s.presente}</td>
-              <td className="p-2">{s.ausente}</td>
-              <td className="p-2">{s.atraso}</td>
-              <td className="p-2">{s.justificado}</td>
+      <div className="mt-4 max-w-2xl overflow-x-auto rounded-lg border border-zinc-200 dark:border-brand-800">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-zinc-50 dark:bg-brand-900">
+            <tr>
+              <th className="p-2">Estudiante</th>
+              <th className="p-2">Presente</th>
+              <th className="p-2">Ausente</th>
+              <th className="p-2">Atraso</th>
+              <th className="p-2">Justificado</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      {summary.length === 0 && <p className="mt-4 text-sm text-zinc-500">Sin datos para mostrar.</p>}
+          </thead>
+          <tbody>
+            {summary.map((s) => (
+              <tr key={s.id} className="border-t border-zinc-200 dark:border-brand-800">
+                <td className="p-2">
+                  {s.lastName}, {s.firstName}
+                </td>
+                <td className="p-2">{s.presente}</td>
+                <td className="p-2 font-medium text-red-700 dark:text-red-300">{s.ausente}</td>
+                <td className="p-2 font-medium text-gold-700 dark:text-gold-400">{s.atraso}</td>
+                <td className="p-2">{s.justificado}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {summary.length === 0 && (
+        <p className="mt-4 text-sm text-zinc-500 dark:text-brand-300">Sin datos para mostrar.</p>
+      )}
     </div>
   );
 }

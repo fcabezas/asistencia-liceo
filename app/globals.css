@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #101828;
 }
 
 @theme inline {
@@ -10,17 +10,121 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Liceo Eduardo Charme — azul institucional */
+  --color-brand-50: #eef2fa;
+  --color-brand-100: #d9e2f5;
+  --color-brand-200: #b3c5eb;
+  --color-brand-300: #8aa7de;
+  --color-brand-400: #5c82c7;
+  --color-brand-500: #2f5ca8;
+  --color-brand-600: #1e4488;
+  --color-brand-700: #1b3b6f;
+  --color-brand-800: #142c54;
+  --color-brand-900: #0f213f;
+  --color-brand-950: #0a1730;
+
+  /* Liceo Eduardo Charme — dorado de acento */
+  --color-gold-50: #fff8eb;
+  --color-gold-100: #ffebc2;
+  --color-gold-200: #ffdd94;
+  --color-gold-300: #ffcb5c;
+  --color-gold-400: #fdb92e;
+  --color-gold-500: #f5a623;
+  --color-gold-600: #db8b0f;
+  --color-gold-700: #b36f0a;
+  --color-gold-800: #8a5608;
+  --color-gold-900: #603c05;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0a1730;
+    --foreground: #edf1fa;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease;
+}
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--color-gold-500);
+  color: var(--color-brand-950);
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-gold-600);
+}
+
+.btn-secondary {
+  border: 1px solid var(--color-brand-300);
+  color: var(--color-brand-700);
+  background-color: transparent;
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-brand-50);
+}
+
+.btn-danger {
+  color: #b91c1c;
+  text-decoration: underline;
+  padding: 0;
+  background: none;
+}
+.btn-danger:hover:not(:disabled) {
+  color: #7f1d1d;
+}
+
+.link-action {
+  color: var(--color-brand-700);
+  text-decoration: underline;
+  font-weight: 500;
+}
+.link-action:hover {
+  color: var(--color-brand-900);
+}
+
+@media (prefers-color-scheme: dark) {
+  .link-action {
+    color: var(--color-gold-400);
+  }
+  .link-action:hover {
+    color: var(--color-gold-300);
+  }
+  .btn-secondary {
+    border-color: var(--color-brand-700);
+    color: var(--color-brand-100);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background-color: var(--color-brand-800);
+  }
+  .btn-danger {
+    color: #fca5a5;
+  }
+  .btn-danger:hover:not(:disabled) {
+    color: #fecaca;
+  }
 }
