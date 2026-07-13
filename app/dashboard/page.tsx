@@ -1,17 +1,77 @@
+import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { db } from "@/db";
+import { scheduleBlocks, courses, subjects } from "@/db/schema";
+import { and, asc, eq } from "drizzle-orm";
+import { chileToday } from "@/lib/date";
 
 export default async function TeacherDashboard() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const teacherId = Number(session.user.id);
+  const { date, isoWeekday } = chileToday();
+  const settings = await db.query.schoolSettings.findFirst();
+  const currentYear = settings?.currentYear ?? new Date().getFullYear();
+
+  const blocks = await db
+    .select({
+      id: scheduleBlocks.id,
+      blockNumber: scheduleBlocks.blockNumber,
+      startTime: scheduleBlocks.startTime,
+      endTime: scheduleBlocks.endTime,
+      courseId: scheduleBlocks.courseId,
+      courseName: courses.name,
+      subjectId: scheduleBlocks.subjectId,
+      subjectName: subjects.name,
+    })
+    .from(scheduleBlocks)
+    .innerJoin(courses, eq(scheduleBlocks.courseId, courses.id))
+    .innerJoin(subjects, eq(scheduleBlocks.subjectId, subjects.id))
+    .where(
+      and(
+        eq(scheduleBlocks.teacherId, teacherId),
+        eq(scheduleBlocks.dayOfWeek, isoWeekday),
+        eq(scheduleBlocks.year, currentYear)
+      )
+    )
+    .orderBy(asc(scheduleBlocks.blockNumber));
+
   return (
     <div className="p-8">
       <h1 className="text-xl font-semibold">Mis bloques de hoy</h1>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-        Hola {session.user.name}. Aquí aparecerán los cursos y bloques que tienes
-        asignados hoy para pasar asistencia.
-      </p>
+      <p className="mt-1 text-sm text-zinc-500">{date}</p>
+
+      {blocks.length === 0 ? (
+        <p className="mt-4 text-zinc-600 dark:text-zinc-400">
+          No tienes bloques asignados hoy.
+        </p>
+      ) : (
+        <ul className="mt-6 flex max-w-lg flex-col gap-2">
+          {blocks.map((b) => (
+            <li key={b.id} className="flex items-center justify-between rounded border p-3 text-sm">
+              <div>
+                <p className="font-medium">
+                  Bloque {b.blockNumber} · {b.courseName} · {b.subjectName}
+                </p>
+                {b.startTime && (
+                  <p className="text-zinc-500">
+                    {b.startTime}
+                    {b.endTime ? ` - ${b.endTime}` : ""}
+                  </p>
+                )}
+              </div>
+              <Link
+                href={`/attendance/${b.courseId}/${b.blockNumber}?subjectId=${b.subjectId}`}
+                className="rounded-md bg-black px-3 py-1.5 text-white dark:bg-white dark:text-black"
+              >
+                Pasar asistencia
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
