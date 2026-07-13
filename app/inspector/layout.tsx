@@ -24,6 +24,13 @@ export default async function InspectorLayout({ children }: { children: React.Re
               Justificaciones
             </Link>
           </li>
+          {role === "inspector_general" && (
+            <li>
+              <Link href="/inspector/notifications" className="block rounded px-2 py-1 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                Notificaciones fallidas
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
       <main className="flex-1">{children}</main>

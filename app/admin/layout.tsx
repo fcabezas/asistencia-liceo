@@ -7,10 +7,13 @@ const links = [
   { href: "/admin/students", label: "Estudiantes" },
   { href: "/admin/students/import", label: "Importar CSV" },
   { href: "/admin/courses", label: "Cursos y asignaturas" },
+  { href: "/admin/courses/promote", label: "Promoción de curso" },
   { href: "/admin/schedule", label: "Horario" },
   { href: "/admin/teachers", label: "Profesores y asignaciones" },
   { href: "/admin/inspector-assignments", label: "Inspectores de pasillo" },
   { href: "/admin/users", label: "Usuarios y roles" },
+  { href: "/admin/notifications", label: "Notificaciones fallidas" },
+  { href: "/admin/reports", label: "Reportes" },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
