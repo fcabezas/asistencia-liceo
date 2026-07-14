@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { courses, subjects, users, scheduleBlocks } from "@/db/schema";
 import { and, asc, eq } from "drizzle-orm";
-import { createScheduleBlock, deleteScheduleBlock } from "./actions";
+import { createScheduleBlock, updateScheduleBlock, deleteScheduleBlock } from "./actions";
 
 const DAY_LABELS: Record<number, string> = {
   1: "Lunes",
@@ -47,11 +47,6 @@ export default async function SchedulePage({
         .orderBy(asc(scheduleBlocks.dayOfWeek), asc(scheduleBlocks.blockNumber))
     : [];
 
-  const subjectName = (id: number) =>
-    allSubjects.find((s) => s.id === id)?.name ?? id;
-  const teacherName = (id: number) =>
-    allTeachers.find((t) => t.id === id)?.name ?? id;
-
   return (
     <div className="p-4 sm:p-8">
       <h1 className="text-xl font-semibold text-brand-900 dark:text-white">
@@ -95,12 +90,72 @@ export default async function SchedulePage({
               <tbody>
                 {blocks.map((b) => (
                   <tr key={b.id} className="border-b">
-                    <td className="p-2">{DAY_LABELS[b.dayOfWeek]}</td>
-                    <td className="p-2">{b.blockNumber}</td>
-                    <td className="p-2">{subjectName(b.subjectId)}</td>
-                    <td className="p-2">{teacherName(b.teacherId)}</td>
-                    <td className="p-2">{b.startTime}</td>
-                    <td className="p-2">{b.endTime}</td>
+                    <td colSpan={6} className="p-2">
+                      <form
+                        action={updateScheduleBlock.bind(null, b.id)}
+                        className="flex flex-wrap items-end gap-2"
+                      >
+                        <select
+                          name="dayOfWeek"
+                          defaultValue={b.dayOfWeek}
+                          className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+                          required
+                        >
+                          {Object.entries(DAY_LABELS).map(([v, label]) => (
+                            <option key={v} value={v}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          name="blockNumber"
+                          type="number"
+                          min={1}
+                          defaultValue={b.blockNumber}
+                          className="w-16 rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+                          required
+                        />
+                        <select
+                          name="subjectId"
+                          defaultValue={b.subjectId}
+                          className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+                          required
+                        >
+                          {allSubjects.map((s) => (
+                            <option key={s.id} value={s.id}>
+                              {s.name}
+                            </option>
+                          ))}
+                        </select>
+                        <select
+                          name="teacherId"
+                          defaultValue={b.teacherId}
+                          className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+                          required
+                        >
+                          {allTeachers.map((t) => (
+                            <option key={t.id} value={t.id}>
+                              {t.name}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          name="startTime"
+                          type="time"
+                          defaultValue={b.startTime ?? ""}
+                          className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+                        />
+                        <input
+                          name="endTime"
+                          type="time"
+                          defaultValue={b.endTime ?? ""}
+                          className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+                        />
+                        <button type="submit" className="btn-secondary">
+                          Guardar
+                        </button>
+                      </form>
+                    </td>
                     <td className="p-2">
                       <form action={deleteScheduleBlock.bind(null, b.id)}>
                         <button className="btn-danger" type="submit">
