@@ -4,6 +4,7 @@ import DashboardShell from "@/components/DashboardShell";
 
 const links = [
   { href: "/admin", label: "Inicio" },
+  { href: "/dashboard", label: "Pasar asistencia (mis cursos)" },
   { href: "/admin/students", label: "Estudiantes" },
   { href: "/admin/students/import", label: "Importar CSV" },
   { href: "/admin/courses", label: "Cursos y asignaturas" },

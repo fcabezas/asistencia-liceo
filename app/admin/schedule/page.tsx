@@ -30,7 +30,7 @@ export default async function SchedulePage({
     db
       .select()
       .from(users)
-      .where(and(eq(users.role, "teacher"), eq(users.isActive, true))),
+      .where(and(inArray(users.role, ["teacher", "admin"]), eq(users.isActive, true))),
     db.query.schoolSettings.findFirst(),
   ]);
 

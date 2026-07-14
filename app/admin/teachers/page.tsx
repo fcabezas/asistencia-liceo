@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { users, courses, subjects, teacherCourseSubjects } from "@/db/schema";
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 import { createTeacherAssignment, deleteTeacherAssignment } from "./actions";
 
 export default async function TeachersPage() {
@@ -9,7 +9,7 @@ export default async function TeachersPage() {
       db
         .select()
         .from(users)
-        .where(and(eq(users.role, "teacher"), eq(users.isActive, true)))
+        .where(and(inArray(users.role, ["teacher", "admin"]), eq(users.isActive, true)))
         .orderBy(asc(users.name)),
       db
         .select()

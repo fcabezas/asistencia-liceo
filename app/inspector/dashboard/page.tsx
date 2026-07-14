@@ -65,7 +65,7 @@ export default async function InspectorDashboard() {
 
   const [allSubjects, allTeachers] = await Promise.all([
     db.select().from(subjects),
-    db.select().from(users).where(eq(users.role, "teacher")),
+    db.select().from(users).where(inArray(users.role, ["teacher", "admin"])),
   ]);
 
   const pending = blocksToday.filter((b) => !takenCourseIds.has(b.courseId));
