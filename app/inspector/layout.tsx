@@ -11,6 +11,7 @@ export default async function InspectorLayout({ children }: { children: React.Re
 
   const links = [
     { href: "/inspector/dashboard", label: "Asistencia no tomada" },
+    { href: "/inspector/pending", label: "Avisos pendientes" },
     { href: "/inspector/justifications", label: "Justificaciones" },
     ...(role === "inspector_general"
       ? [{ href: "/inspector/notifications", label: "Notificaciones fallidas" }]
