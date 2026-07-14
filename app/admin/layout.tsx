@@ -9,6 +9,7 @@ const links = [
   { href: "/admin/courses", label: "Cursos y asignaturas" },
   { href: "/admin/courses/promote", label: "Promoción de curso" },
   { href: "/admin/schedule", label: "Horario" },
+  { href: "/admin/bell-schedule", label: "Horas de bloque" },
   { href: "/admin/teachers", label: "Profesores y asignaciones" },
   { href: "/admin/inspector-assignments", label: "Inspectores de pasillo" },
   { href: "/admin/users", label: "Usuarios y roles" },

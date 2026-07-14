@@ -2,9 +2,28 @@
 
 import { requireRole } from "@/lib/authz";
 import { db } from "@/db";
-import { scheduleBlocks } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { scheduleBlocks, bellSchedule } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+
+function dayGroupFor(dayOfWeek: number): "lunes_jueves" | "viernes" {
+  return dayOfWeek === 5 ? "viernes" : "lunes_jueves";
+}
+
+async function getBellTimes(dayOfWeek: number, blockNumber: number) {
+  const bell = await db.query.bellSchedule.findFirst({
+    where: and(
+      eq(bellSchedule.dayGroup, dayGroupFor(dayOfWeek)),
+      eq(bellSchedule.blockNumber, blockNumber)
+    ),
+  });
+  if (!bell) {
+    throw new Error(
+      "Falta configurar la hora de este bloque en \"Horas de bloque\" antes de asignar asignatura y profesor."
+    );
+  }
+  return { startTime: bell.startTime, endTime: bell.endTime };
+}
 
 export async function createScheduleBlock(formData: FormData) {
   await requireRole("admin");
@@ -14,16 +33,13 @@ export async function createScheduleBlock(formData: FormData) {
   const blockNumber = Number(formData.get("blockNumber"));
   const subjectId = Number(formData.get("subjectId"));
   const teacherId = Number(formData.get("teacherId"));
-  const startTime = String(formData.get("startTime") ?? "") || null;
-  const endTime = String(formData.get("endTime") ?? "") || null;
   const year = Number(formData.get("year"));
 
   if (!courseId || !dayOfWeek || !blockNumber || !subjectId || !teacherId || !year) {
     throw new Error("Faltan datos del bloque de horario.");
   }
-  if (blockNumber === 1 && !startTime) {
-    throw new Error("El bloque 1 requiere hora de inicio (se usa para detectar asistencia no tomada).");
-  }
+
+  const { startTime, endTime } = await getBellTimes(dayOfWeek, blockNumber);
 
   await db.insert(scheduleBlocks).values({
     courseId,
@@ -42,23 +58,16 @@ export async function createScheduleBlock(formData: FormData) {
 export async function updateScheduleBlock(blockId: number, formData: FormData) {
   await requireRole("admin");
 
-  const dayOfWeek = Number(formData.get("dayOfWeek"));
-  const blockNumber = Number(formData.get("blockNumber"));
   const subjectId = Number(formData.get("subjectId"));
   const teacherId = Number(formData.get("teacherId"));
-  const startTime = String(formData.get("startTime") ?? "") || null;
-  const endTime = String(formData.get("endTime") ?? "") || null;
 
-  if (!dayOfWeek || !blockNumber || !subjectId || !teacherId) {
+  if (!subjectId || !teacherId) {
     throw new Error("Faltan datos del bloque de horario.");
-  }
-  if (blockNumber === 1 && !startTime) {
-    throw new Error("El bloque 1 requiere hora de inicio (se usa para detectar asistencia no tomada).");
   }
 
   await db
     .update(scheduleBlocks)
-    .set({ dayOfWeek, blockNumber, subjectId, teacherId, startTime, endTime })
+    .set({ subjectId, teacherId })
     .where(eq(scheduleBlocks.id, blockId));
 
   revalidatePath("/admin/schedule");

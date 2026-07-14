@@ -48,6 +48,8 @@ export const notificationLogStatus = pgEnum("notification_log_status", [
   "failed",
 ]);
 
+export const dayGroup = pgEnum("day_group", ["lunes_jueves", "viernes"]);
+
 export const schoolSettings = pgTable("school_settings", {
   id: integer("id").primaryKey().default(1),
   name: text("name").notNull(),
@@ -123,6 +125,18 @@ export const scheduleBlocks = pgTable(
       t.year
     ),
   ]
+);
+
+export const bellSchedule = pgTable(
+  "bell_schedule",
+  {
+    id: serial("id").primaryKey(),
+    dayGroup: dayGroup("day_group").notNull(),
+    blockNumber: integer("block_number").notNull(),
+    startTime: time("start_time").notNull(),
+    endTime: time("end_time").notNull(),
+  },
+  (t) => [uniqueIndex("bell_schedule_unique").on(t.dayGroup, t.blockNumber)]
 );
 
 export const guardians = pgTable("guardians", {
