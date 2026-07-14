@@ -1,7 +1,13 @@
 import { signIn } from "@/lib/auth";
 import Logo from "@/components/Logo";
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+
   return (
     <div className="flex min-h-screen flex-col bg-brand-950 sm:flex-row">
       <div className="flex flex-1 flex-col justify-center gap-4 px-6 py-16 text-white sm:px-12 md:px-20">
@@ -20,6 +26,14 @@ export default function LoginPage() {
           <p className="mt-1 text-sm text-zinc-500 dark:text-brand-300">
             Usa tu cuenta institucional de Google del liceo.
           </p>
+
+          {error && (
+            <p className="mt-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200">
+              Tu cuenta no está autorizada todavía. Pídele al administrador del
+              sistema que agregue tu correo en &quot;Usuarios y roles&quot;
+              antes de intentar de nuevo.
+            </p>
+          )}
 
           <form
             className="mt-6"

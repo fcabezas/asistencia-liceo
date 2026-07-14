@@ -27,29 +27,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return false;
       }
 
-      // Look up by email first: an admin can be seeded by email (scripts/seed-admin.ts)
-      // before their first real Google login, so googleSub may not be linked yet.
+      // The Workspace domain can be shared across multiple schools (e.g. a
+      // whole SLEP), so matching the domain alone isn't enough to scope
+      // access to this school. A user row must be pre-created by an admin
+      // (with a "pending:" googleSub placeholder) before anyone can sign in;
+      // there is no auto-provisioning on first login.
       const existing = await db.query.users.findFirst({
         where: eq(users.email, email),
       });
 
       if (!existing) {
-        await db.insert(users).values({
-          googleSub: profile.sub,
-          email,
-          name: user.name ?? email,
-          role: "teacher",
-        });
-      } else {
-        if (!existing.isActive) {
-          return false;
-        }
-        if (existing.googleSub !== profile.sub) {
-          await db
-            .update(users)
-            .set({ googleSub: profile.sub })
-            .where(eq(users.id, existing.id));
-        }
+        return false;
+      }
+      if (!existing.isActive) {
+        return false;
+      }
+      if (existing.googleSub !== profile.sub) {
+        await db
+          .update(users)
+          .set({ googleSub: profile.sub })
+          .where(eq(users.id, existing.id));
       }
 
       return true;

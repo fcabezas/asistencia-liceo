@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { users, userRole } from "@/db/schema";
 import { asc } from "drizzle-orm";
-import { updateUserRole, toggleUserActive } from "./actions";
+import { updateUserRole, toggleUserActive, createPendingUser } from "./actions";
 
 const ROLE_LABELS: Record<string, string> = {
   admin: "Admin",
@@ -20,9 +20,59 @@ export default async function UsersPage() {
         Usuarios y roles
       </h1>
       <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-brand-300">
-        Los usuarios aparecen aquí automáticamente tras su primer login con
-        Google (como &quot;Profesor&quot;). Asigna aquí los demás roles.
+        Como el dominio de correo institucional puede ser compartido con otros
+        colegios, nadie puede entrar por su cuenta la primera vez: primero
+        agrega aquí el correo exacto de cada profesor/inspector/director, y
+        recién ahí esa persona podrá iniciar sesión con Google.
       </p>
+
+      <form
+        action={createPendingUser}
+        className="mt-6 flex max-w-2xl flex-wrap items-end gap-2 text-sm"
+      >
+        <div>
+          <label className="block text-xs text-zinc-500 dark:text-brand-300">
+            Nombre
+          </label>
+          <input
+            name="name"
+            placeholder="Nombre completo"
+            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-zinc-500 dark:text-brand-300">
+            Correo institucional
+          </label>
+          <input
+            name="email"
+            type="email"
+            placeholder="nombre@slepcolchagua.cl"
+            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-zinc-500 dark:text-brand-300">
+            Rol
+          </label>
+          <select
+            name="role"
+            defaultValue="teacher"
+            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+          >
+            {userRole.enumValues.map((r) => (
+              <option key={r} value={r}>
+                {ROLE_LABELS[r]}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button type="submit" className="btn-primary">
+          Agregar usuario
+        </button>
+      </form>
 
       <div className="mt-6 max-w-3xl overflow-x-auto rounded-lg border border-zinc-200 dark:border-brand-800">
         <table className="w-full text-left text-sm">

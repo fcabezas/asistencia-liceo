@@ -32,3 +32,34 @@ export async function toggleUserActive(userId: number, isActive: boolean) {
   await db.update(users).set({ isActive }).where(eq(users.id, userId));
   revalidatePath("/admin/users");
 }
+
+export async function createPendingUser(formData: FormData) {
+  await requireRole("admin");
+
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const name = String(formData.get("name") ?? "").trim();
+  const role = String(formData.get("role") ?? "teacher");
+
+  if (!email || !name) {
+    throw new Error("Faltan datos del usuario.");
+  }
+  if (!VALID_ROLES.includes(role as (typeof VALID_ROLES)[number])) {
+    throw new Error("Rol inválido.");
+  }
+
+  const existing = await db.query.users.findFirst({ where: eq(users.email, email) });
+  if (existing) {
+    throw new Error("Ya existe un usuario con ese correo.");
+  }
+
+  // No googleSub yet: it links automatically to the real Google account the
+  // first time this person signs in with that exact email.
+  await db.insert(users).values({
+    googleSub: `pending:${email}`,
+    email,
+    name,
+    role: role as (typeof VALID_ROLES)[number],
+  });
+
+  revalidatePath("/admin/users");
+}
