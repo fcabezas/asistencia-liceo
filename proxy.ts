@@ -7,6 +7,7 @@ const roleHome: Record<string, string> = {
   inspector_general: "/inspector/dashboard",
   inspector_pasillo: "/inspector/dashboard",
   teacher: "/dashboard",
+  pie: "/dashboard",
 };
 
 export default auth((req) => {

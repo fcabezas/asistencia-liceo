@@ -13,6 +13,7 @@ export default async function InspectorLayout({ children }: { children: React.Re
     { href: "/inspector/dashboard", label: "Asistencia no tomada" },
     { href: "/inspector/pending", label: "Avisos pendientes" },
     { href: "/inspector/justifications", label: "Justificaciones" },
+    { href: "/inspector/substitutes", label: "Reemplazos (PIE)" },
     ...(role === "inspector_general"
       ? [{ href: "/inspector/notifications", label: "Notificaciones fallidas" }]
       : []),

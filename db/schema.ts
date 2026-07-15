@@ -18,6 +18,7 @@ export const userRole = pgEnum("user_role", [
   "inspector_general",
   "inspector_pasillo",
   "teacher",
+  "pie",
 ]);
 
 export const identifierType = pgEnum("identifier_type", ["rut", "pasaporte"]);
@@ -123,6 +124,30 @@ export const scheduleBlocks = pgTable(
       t.dayOfWeek,
       t.blockNumber,
       t.year
+    ),
+  ]
+);
+
+// Cubre un bloque puntual (curso + bloque + fecha) con alguien de PIE cuando
+// el profesor habitual falta, sin modificar el horario semanal fijo.
+export const substituteAssignments = pgTable(
+  "substitute_assignments",
+  {
+    id: serial("id").primaryKey(),
+    courseId: integer("course_id").notNull().references(() => courses.id),
+    blockNumber: integer("block_number").notNull(),
+    date: date("date").notNull(),
+    substituteTeacherId: integer("substitute_teacher_id")
+      .notNull()
+      .references(() => users.id),
+    createdBy: integer("created_by").notNull().references(() => users.id),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("substitute_assignment_unique").on(
+      t.courseId,
+      t.blockNumber,
+      t.date
     ),
   ]
 );

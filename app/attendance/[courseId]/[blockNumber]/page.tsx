@@ -8,6 +8,7 @@ import {
   justifications,
   courses,
   subjects,
+  substituteAssignments,
 } from "@/db/schema";
 import { and, asc, eq, gte, inArray, lte } from "drizzle-orm";
 import { chileToday } from "@/lib/date";
@@ -20,7 +21,13 @@ export default async function AttendancePage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  if (session.user.role !== "teacher" && session.user.role !== "admin") redirect("/dashboard");
+  if (
+    session.user.role !== "teacher" &&
+    session.user.role !== "admin" &&
+    session.user.role !== "pie"
+  ) {
+    redirect("/dashboard");
+  }
 
   const { courseId: courseIdParam, blockNumber: blockNumberParam } = await params;
   const courseId = Number(courseIdParam);
@@ -31,7 +38,7 @@ export default async function AttendancePage({
   const settings = await db.query.schoolSettings.findFirst();
   const year = settings?.currentYear ?? new Date().getFullYear();
 
-  const block = await db.query.scheduleBlocks.findFirst({
+  let block = await db.query.scheduleBlocks.findFirst({
     where: and(
       eq(scheduleBlocks.teacherId, teacherId),
       eq(scheduleBlocks.courseId, courseId),
@@ -40,6 +47,29 @@ export default async function AttendancePage({
       eq(scheduleBlocks.year, year)
     ),
   });
+
+  if (!block) {
+    // Not the regular teacher for this block — check if they were activated
+    // as today's PIE substitute for this exact course + block.
+    const substitution = await db.query.substituteAssignments.findFirst({
+      where: and(
+        eq(substituteAssignments.substituteTeacherId, teacherId),
+        eq(substituteAssignments.courseId, courseId),
+        eq(substituteAssignments.blockNumber, blockNumber),
+        eq(substituteAssignments.date, date)
+      ),
+    });
+    if (substitution) {
+      block = await db.query.scheduleBlocks.findFirst({
+        where: and(
+          eq(scheduleBlocks.courseId, courseId),
+          eq(scheduleBlocks.blockNumber, blockNumber),
+          eq(scheduleBlocks.dayOfWeek, isoWeekday),
+          eq(scheduleBlocks.year, year)
+        ),
+      });
+    }
+  }
 
   if (!block) {
     notFound();

@@ -2,7 +2,7 @@
 
 import { requireRole } from "@/lib/authz";
 import { db } from "@/db";
-import { scheduleBlocks } from "@/db/schema";
+import { scheduleBlocks, substituteAssignments } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { chileToday } from "@/lib/date";
 import { saveAttendance, type AttendanceStatusInput } from "@/lib/attendance";
@@ -13,7 +13,7 @@ export async function saveAttendanceAction(input: {
   blockNumber: number;
   statuses: { studentId: number; status: AttendanceStatusInput }[];
 }) {
-  const session = await requireRole("teacher", "admin");
+  const session = await requireRole("teacher", "admin", "pie");
   const teacherId = Number(session.user.id);
 
   const { date, isoWeekday } = chileToday();
@@ -21,8 +21,9 @@ export async function saveAttendanceAction(input: {
   const year = settings?.currentYear ?? new Date().getFullYear();
 
   // Re-derive the subject from the schedule instead of trusting the client,
-  // and confirm this teacher is actually assigned to this block today.
-  const block = await db.query.scheduleBlocks.findFirst({
+  // and confirm this teacher is actually assigned to this block today —
+  // either as the regular teacher, or as today's PIE substitute for it.
+  let block = await db.query.scheduleBlocks.findFirst({
     where: and(
       eq(scheduleBlocks.teacherId, teacherId),
       eq(scheduleBlocks.courseId, input.courseId),
@@ -31,6 +32,27 @@ export async function saveAttendanceAction(input: {
       eq(scheduleBlocks.year, year)
     ),
   });
+
+  if (!block) {
+    const substitution = await db.query.substituteAssignments.findFirst({
+      where: and(
+        eq(substituteAssignments.substituteTeacherId, teacherId),
+        eq(substituteAssignments.courseId, input.courseId),
+        eq(substituteAssignments.blockNumber, input.blockNumber),
+        eq(substituteAssignments.date, date)
+      ),
+    });
+    if (substitution) {
+      block = await db.query.scheduleBlocks.findFirst({
+        where: and(
+          eq(scheduleBlocks.courseId, input.courseId),
+          eq(scheduleBlocks.blockNumber, input.blockNumber),
+          eq(scheduleBlocks.dayOfWeek, isoWeekday),
+          eq(scheduleBlocks.year, year)
+        ),
+      });
+    }
+  }
 
   if (!block) {
     throw new Error("No tienes este bloque asignado hoy.");

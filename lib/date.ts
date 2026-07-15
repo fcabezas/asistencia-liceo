@@ -27,3 +27,10 @@ export function chileToday(): { date: string; isoWeekday: number } {
 
   return { date, isoWeekday: WEEKDAY_TO_ISO[weekdayStr] };
 }
+
+/** ISO weekday (1=lunes..7=domingo) for a plain "YYYY-MM-DD" date string. */
+export function isoWeekdayOf(dateStr: string): number {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const jsDay = new Date(year, month - 1, day).getDay();
+  return jsDay === 0 ? 7 : jsDay;
+}

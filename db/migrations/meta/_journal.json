@@ -15,6 +15,13 @@
       "when": 1784055899844,
       "tag": "0001_fine_devos",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784146767693,
+      "tag": "0002_cultured_caretaker",
+      "breakpoints": true
     }
   ]
 }

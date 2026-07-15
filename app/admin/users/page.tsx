@@ -9,6 +9,7 @@ const ROLE_LABELS: Record<string, string> = {
   inspector_general: "Inspector general",
   inspector_pasillo: "Inspector de pasillo",
   teacher: "Profesor",
+  pie: "PIE (reemplazo)",
 };
 
 export default async function UsersPage() {
