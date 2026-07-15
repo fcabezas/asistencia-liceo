@@ -28,7 +28,7 @@ export default async function LoginPage({
           </p>
 
           {error && (
-            <p className="mt-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200">
+            <p className="alert-error mt-4">
               Tu cuenta no está autorizada todavía. Pídele al administrador del
               sistema que agregue tu correo en &quot;Usuarios y roles&quot;
               antes de intentar de nuevo.

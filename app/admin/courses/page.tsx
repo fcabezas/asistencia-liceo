@@ -48,13 +48,13 @@ export default async function CoursesPage() {
         </div>
 
         <form action={createCourse} className="mt-4 flex max-w-2xl flex-wrap gap-2">
-          <input name="name" placeholder="Nombre (ej. 1ro Medio A)" className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required />
-          <input name="gradeLevel" placeholder="Nivel (ej. 1M)" className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required />
+          <input name="name" placeholder="Nombre (ej. 1ro Medio A)" className="input" required />
+          <input name="gradeLevel" placeholder="Nivel (ej. 1M)" className="input" required />
           <input
             name="year"
             type="number"
             defaultValue={currentYear}
-            className="w-24 rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            className="input w-24"
             required
           />
           <button type="submit" className="btn-primary">
@@ -73,7 +73,7 @@ export default async function CoursesPage() {
           ))}
         </ul>
         <form action={createSubject} className="mt-4 flex max-w-md gap-2">
-          <input name="name" placeholder="Nombre de asignatura" className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required />
+          <input name="name" placeholder="Nombre de asignatura" className="input" required />
           <button type="submit" className="btn-primary">
             Agregar
           </button>

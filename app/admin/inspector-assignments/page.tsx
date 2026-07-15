@@ -67,14 +67,8 @@ export default async function InspectorAssignmentsPage() {
         className="mt-6 flex max-w-xl flex-wrap items-end gap-2 text-sm"
       >
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">
-            Inspector de pasillo
-          </label>
-          <select
-            name="inspectorId"
-            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
-            required
-          >
+          <label className="label">Inspector de pasillo</label>
+          <select name="inspectorId" className="input" required>
             {inspectors.map((i) => (
               <option key={i.id} value={i.id}>
                 {i.name}
@@ -83,8 +77,8 @@ export default async function InspectorAssignmentsPage() {
           </select>
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">Curso</label>
-          <select name="courseId" className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required>
+          <label className="label">Curso</label>
+          <select name="courseId" className="input" required>
             {allCourses.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}

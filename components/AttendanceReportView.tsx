@@ -28,8 +28,8 @@ export default async function AttendanceReportView({
     <div>
       <form method="get" className="flex flex-wrap items-end gap-2 text-sm">
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">Curso</label>
-          <select name="courseId" defaultValue={courseId} className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900">
+          <label className="label">Curso</label>
+          <select name="courseId" defaultValue={courseId} className="input">
             {allCourses.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -38,12 +38,12 @@ export default async function AttendanceReportView({
           </select>
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">Desde</label>
-          <input type="date" name="startDate" defaultValue={startDate} className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" />
+          <label className="label">Desde</label>
+          <input type="date" name="startDate" defaultValue={startDate} className="input" />
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">Hasta</label>
-          <input type="date" name="endDate" defaultValue={endDate} className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" />
+          <label className="label">Hasta</label>
+          <input type="date" name="endDate" defaultValue={endDate} className="input" />
         </div>
         <button type="submit" className="btn-secondary">
           Ver

@@ -49,7 +49,7 @@ export default async function StudentsPage({
           name="q"
           defaultValue={q}
           placeholder="Buscar por nombre o identificador..."
-          className="w-72 rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+          className="input w-72"
         />
         <button type="submit" className="btn-secondary">
           Buscar

@@ -76,7 +76,7 @@ export default async function SchedulePage({
           id="courseId"
           name="courseId"
           defaultValue={selectedCourseId}
-          className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+          className="input"
         >
           {allCourses.map((c) => (
             <option key={c.id} value={c.id}>
@@ -84,7 +84,7 @@ export default async function SchedulePage({
             </option>
           ))}
         </select>
-        <button type="submit" className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900">
+        <button type="submit" className="btn-secondary">
           Ver
         </button>
       </form>
@@ -130,7 +130,7 @@ export default async function SchedulePage({
                             <select
                               name="subjectId"
                               defaultValue={existing.subjectId}
-                              className="w-full rounded border border-zinc-300 px-1 py-0.5 dark:border-brand-700 dark:bg-brand-900"
+                              className="input input-sm w-full"
                               required
                             >
                               {allSubjects.map((s) => (
@@ -142,7 +142,7 @@ export default async function SchedulePage({
                             <select
                               name="teacherId"
                               defaultValue={existing.teacherId}
-                              className="w-full rounded border border-zinc-300 px-1 py-0.5 dark:border-brand-700 dark:bg-brand-900"
+                              className="input input-sm w-full"
                               required
                             >
                               {allTeachers.map((t) => (
@@ -173,7 +173,7 @@ export default async function SchedulePage({
                             <select
                               name="subjectId"
                               defaultValue=""
-                              className="w-full rounded border border-zinc-300 px-1 py-0.5 dark:border-brand-700 dark:bg-brand-900"
+                              className="input input-sm w-full"
                               required
                             >
                               <option value="" disabled>
@@ -188,7 +188,7 @@ export default async function SchedulePage({
                             <select
                               name="teacherId"
                               defaultValue=""
-                              className="w-full rounded border border-zinc-300 px-1 py-0.5 dark:border-brand-700 dark:bg-brand-900"
+                              className="input input-sm w-full"
                               required
                             >
                               <option value="" disabled>

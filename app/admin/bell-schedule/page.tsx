@@ -54,14 +54,14 @@ export default async function BellSchedulePage() {
                             name="startTime"
                             type="time"
                             defaultValue={existing?.startTime ?? ""}
-                            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+                            className="input"
                             required
                           />
                           <input
                             name="endTime"
                             type="time"
                             defaultValue={existing?.endTime ?? ""}
-                            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+                            className="input"
                             required
                           />
                           <button type="submit" className="btn-secondary">

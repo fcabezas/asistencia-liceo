@@ -31,37 +31,27 @@ export default async function UsersPage() {
         className="mt-6 flex max-w-2xl flex-wrap items-end gap-2 text-sm"
       >
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">
-            Nombre
-          </label>
+          <label className="label">Nombre</label>
           <input
             name="name"
             placeholder="Nombre completo"
-            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            className="input"
             required
           />
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">
-            Correo institucional
-          </label>
+          <label className="label">Correo institucional</label>
           <input
             name="email"
             type="email"
             placeholder="nombre@slepcolchagua.cl"
-            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            className="input"
             required
           />
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">
-            Rol
-          </label>
-          <select
-            name="role"
-            defaultValue="teacher"
-            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
-          >
+          <label className="label">Rol</label>
+          <select name="role" defaultValue="teacher" className="input">
             {userRole.enumValues.map((r) => (
               <option key={r} value={r}>
                 {ROLE_LABELS[r]}
@@ -94,11 +84,7 @@ export default async function UsersPage() {
                     action={updateUserRole.bind(null, u.id)}
                     className="flex items-center gap-2"
                   >
-                    <select
-                      name="role"
-                      defaultValue={u.role}
-                      className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
-                    >
+                    <select name="role" defaultValue={u.role} className="input">
                       {userRole.enumValues.map((r) => (
                         <option key={r} value={r}>
                           {ROLE_LABELS[r]}

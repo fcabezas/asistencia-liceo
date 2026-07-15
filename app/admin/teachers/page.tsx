@@ -74,12 +74,8 @@ export default async function TeachersPage() {
       >
         <input type="hidden" name="year" value={currentYear} />
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">Profesor</label>
-          <select
-            name="teacherId"
-            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
-            required
-          >
+          <label className="label">Profesor</label>
+          <select name="teacherId" className="input" required>
             {teachers.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.name}
@@ -88,8 +84,8 @@ export default async function TeachersPage() {
           </select>
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">Curso</label>
-          <select name="courseId" className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required>
+          <label className="label">Curso</label>
+          <select name="courseId" className="input" required>
             {allCourses.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -98,12 +94,8 @@ export default async function TeachersPage() {
           </select>
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 dark:text-brand-300">Asignatura</label>
-          <select
-            name="subjectId"
-            className="rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
-            required
-          >
+          <label className="label">Asignatura</label>
+          <select name="subjectId" className="input" required>
             {allSubjects.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name}

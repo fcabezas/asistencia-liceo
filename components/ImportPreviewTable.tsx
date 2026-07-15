@@ -86,7 +86,7 @@ export default function ImportStudentsForm() {
       </div>
 
       {parseErrors.length > 0 && (
-        <div className="rounded-md border border-red-400 bg-red-50 p-4 text-red-800 dark:bg-red-950 dark:text-red-200">
+        <div className="alert-error">
           <p className="font-medium">Errores de formato del archivo:</p>
           <ul className="list-disc pl-5">
             {parseErrors.map((e, i) => (
@@ -148,7 +148,7 @@ export default function ImportStudentsForm() {
           <button
             onClick={handleConfirm}
             disabled={busy || preview.validCount === 0}
-            className="w-fit rounded-md bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-800 disabled:opacity-50"
+            className="btn-success w-fit"
           >
             {busy ? "Importando..." : `Confirmar import (${preview.validCount} filas)`}
           </button>
@@ -156,9 +156,7 @@ export default function ImportStudentsForm() {
       )}
 
       {result && (
-        <div className="rounded-md border border-green-400 bg-green-50 p-4 text-green-800 dark:bg-green-950 dark:text-green-200">
-          {result}
-        </div>
+        <div className="alert-success">{result}</div>
       )}
     </div>
   );

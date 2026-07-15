@@ -31,7 +31,7 @@ export default function PromoteForm({ courses }: { courses: Course[] }) {
           name="fromCourseId"
           value={fromCourseId}
           onChange={(e) => setFromCourseId(Number(e.target.value))}
-          className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+          className="input mt-1 w-full"
         >
           {courses.map((c) => (
             <option key={c.id} value={c.id}>
@@ -46,7 +46,7 @@ export default function PromoteForm({ courses }: { courses: Course[] }) {
           name="toCourseId"
           value={toCourseId}
           onChange={(e) => setToCourseId(Number(e.target.value))}
-          className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+          className="input mt-1 w-full"
         >
           {courses.map((c) => (
             <option key={c.id} value={c.id}>

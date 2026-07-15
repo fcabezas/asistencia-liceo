@@ -32,15 +32,15 @@ export default async function EditStudentPage({
       <form action={updateStudent.bind(null, studentId)} className="mt-6 flex max-w-md flex-col gap-3 text-sm">
         <label>
           Nombre
-          <input name="firstName" defaultValue={student.firstName} className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required />
+          <input name="firstName" defaultValue={student.firstName} className="input mt-1 w-full" required />
         </label>
         <label>
           Apellido
-          <input name="lastName" defaultValue={student.lastName} className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required />
+          <input name="lastName" defaultValue={student.lastName} className="input mt-1 w-full" required />
         </label>
         <label>
           Curso
-          <select name="courseId" defaultValue={student.courseId} className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required>
+          <select name="courseId" defaultValue={student.courseId} className="input mt-1 w-full" required>
             {allCourses.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -54,7 +54,7 @@ export default async function EditStudentPage({
 
         <label>
           Nombre
-          <input name="guardianName" defaultValue={guardian?.fullName} className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" required />
+          <input name="guardianName" defaultValue={guardian?.fullName} className="input mt-1 w-full" required />
         </label>
         <label>
           Teléfono (WhatsApp)
@@ -62,17 +62,17 @@ export default async function EditStudentPage({
             name="guardianPhone"
             defaultValue={guardian?.phoneE164}
             placeholder="+56912345678"
-            className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            className="input mt-1 w-full"
             required
           />
         </label>
         <label>
           Email (opcional)
-          <input name="guardianEmail" defaultValue={guardian?.email ?? ""} className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" />
+          <input name="guardianEmail" defaultValue={guardian?.email ?? ""} className="input mt-1 w-full" />
         </label>
         <label>
           RUT (opcional)
-          <input name="guardianRut" defaultValue={guardian?.rut ?? ""} className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900" />
+          <input name="guardianRut" defaultValue={guardian?.rut ?? ""} className="input mt-1 w-full" />
         </label>
 
         <button type="submit" className="btn-primary mt-2 w-fit">

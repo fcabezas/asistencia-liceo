@@ -65,7 +65,7 @@ export default async function StudentJustificationPage({
           <textarea
             name="reason"
             required
-            className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            className="input mt-1 w-full"
             placeholder="Ej. Certificado médico por gripe"
           />
         </label>
@@ -75,7 +75,7 @@ export default async function StudentJustificationPage({
             name="startDate"
             type="date"
             required
-            className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            className="input mt-1 w-full"
           />
         </label>
         <label>
@@ -86,7 +86,7 @@ export default async function StudentJustificationPage({
             min={1}
             defaultValue={1}
             required
-            className="mt-1 w-full rounded border border-zinc-300 px-2 py-1 dark:border-brand-700 dark:bg-brand-900"
+            className="input mt-1 w-full"
           />
         </label>
         <button
