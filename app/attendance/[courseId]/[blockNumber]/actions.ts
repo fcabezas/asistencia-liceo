@@ -13,7 +13,7 @@ export async function saveAttendanceAction(input: {
   blockNumber: number;
   statuses: { studentId: number; status: AttendanceStatusInput }[];
 }) {
-  const session = await requireRole("teacher");
+  const session = await requireRole("teacher", "admin");
   const teacherId = Number(session.user.id);
 
   const { date, isoWeekday } = chileToday();

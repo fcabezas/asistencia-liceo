@@ -18,12 +18,14 @@ export default function AttendanceGrid({
   students,
   initialStatuses,
   justifiedStudentIds,
+  carriedOver,
 }: {
   courseId: number;
   blockNumber: number;
   students: Student[];
   initialStatuses: Record<number, EditableStatus>;
   justifiedStudentIds: number[];
+  carriedOver: boolean;
 }) {
   const editableStudents = students.filter((s) => !justifiedStudentIds.includes(s.id));
   const justifiedStudents = students.filter((s) => justifiedStudentIds.includes(s.id));
@@ -57,8 +59,9 @@ export default function AttendanceGrid({
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm text-zinc-500 dark:text-brand-300">
-        Todos parten como &quot;Presente&quot;. Solo marca a quienes falten o
-        lleguen atrasados.
+        {carriedOver
+          ? "Se muestra el último estado registrado hoy para este curso. Solo ajusta a quien haya cambiado (por ejemplo, llegó atrasado y ya está presente)."
+          : 'Todos parten como "Presente". Solo marca a quienes falten o lleguen atrasados.'}
       </p>
 
       <ul className="flex max-w-xl flex-col divide-y divide-zinc-200 rounded-lg border border-zinc-200 dark:divide-brand-800 dark:border-brand-800">

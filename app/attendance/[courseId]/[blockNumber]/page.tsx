@@ -20,7 +20,7 @@ export default async function AttendancePage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  if (session.user.role !== "teacher") redirect("/dashboard");
+  if (session.user.role !== "teacher" && session.user.role !== "admin") redirect("/dashboard");
 
   const { courseId: courseIdParam, blockNumber: blockNumberParam } = await params;
   const courseId = Number(courseIdParam);
@@ -57,7 +57,7 @@ export default async function AttendancePage({
 
   const studentIds = courseStudents.map((s) => s.id);
 
-  const [existingRecords, activeJustifications] = await Promise.all([
+  const [todayRecords, activeJustifications] = await Promise.all([
     studentIds.length
       ? db
           .select()
@@ -65,7 +65,6 @@ export default async function AttendancePage({
           .where(
             and(
               eq(attendanceRecords.date, date),
-              eq(attendanceRecords.blockNumber, blockNumber),
               inArray(attendanceRecords.studentId, studentIds)
             )
           )
@@ -84,10 +83,28 @@ export default async function AttendancePage({
       : [],
   ]);
 
+  // If this block was already taken, use its own values. Otherwise, prefill
+  // with the latest status from an earlier block today so teachers only have
+  // to confirm/adjust exceptions instead of starting from scratch each time.
+  const thisBlockRecords = todayRecords.filter((r) => r.blockNumber === blockNumber);
+  const priorBlockRecords = todayRecords
+    .filter((r) => r.blockNumber < blockNumber)
+    .sort((a, b) => b.blockNumber - a.blockNumber);
+
   const initialStatuses: Record<number, "presente" | "ausente" | "atraso"> = {};
-  for (const r of existingRecords) {
-    if (r.status === "presente" || r.status === "ausente" || r.status === "atraso") {
-      initialStatuses[r.studentId] = r.status;
+  let carriedOver = false;
+  for (const studentId of studentIds) {
+    const own = thisBlockRecords.find((r) => r.studentId === studentId);
+    if (own) {
+      if (own.status === "presente" || own.status === "ausente" || own.status === "atraso") {
+        initialStatuses[studentId] = own.status;
+      }
+      continue;
+    }
+    const prior = priorBlockRecords.find((r) => r.studentId === studentId);
+    if (prior && (prior.status === "presente" || prior.status === "ausente" || prior.status === "atraso")) {
+      initialStatuses[studentId] = prior.status;
+      carriedOver = true;
     }
   }
 
@@ -107,6 +124,7 @@ export default async function AttendancePage({
           students={courseStudents}
           initialStatuses={initialStatuses}
           justifiedStudentIds={justifiedStudentIds}
+          carriedOver={carriedOver}
         />
       </div>
     </div>
