@@ -1,11 +1,9 @@
 import "server-only";
 import { db } from "@/db";
-import { notificationLog, notificationQueue } from "@/db/schema";
+import { notificationQueue } from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 
 type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
-
-const SENT_STATUSES = ["sent", "delivered", "read"] as const;
 
 /**
  * Keeps notification_queue in sync with the current notifiable state of an
@@ -17,19 +15,22 @@ const SENT_STATUSES = ["sent", "delivered", "read"] as const;
  *   fact): queue a correction/apology message.
  * - Queued but not yet sent and no longer notifiable: cancel the pending send.
  * - Already sent and still notifiable: no-op (avoid duplicate sends).
+ *
+ * "Already sent" is read from notification_queue itself (an inspector marked
+ * it "avisado"), not from notification_log: with the manual wa.me workflow
+ * nothing ever writes to notification_log, so a correction arriving after the
+ * inspector already sent the WhatsApp would otherwise go undetected.
  */
 export async function reconcileNotification(
   tx: Transaction,
   attendanceRecordId: number,
   isNotifiable: boolean
 ) {
-  const priorNotification = await tx.query.notificationLog.findFirst({
-    where: eq(notificationLog.attendanceRecordId, attendanceRecordId),
-    orderBy: desc(notificationLog.sentAt),
+  const lastQueueEntry = await tx.query.notificationQueue.findFirst({
+    where: eq(notificationQueue.attendanceRecordId, attendanceRecordId),
+    orderBy: desc(notificationQueue.id),
   });
-  const alreadySent = Boolean(
-    priorNotification && SENT_STATUSES.includes(priorNotification.status as (typeof SENT_STATUSES)[number])
-  );
+  const alreadySent = lastQueueEntry?.status === "done";
 
   if (isNotifiable) {
     if (!alreadySent) {
