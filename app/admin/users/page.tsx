@@ -1,7 +1,8 @@
 import { db } from "@/db";
 import { users, userRole } from "@/db/schema";
 import { asc } from "drizzle-orm";
-import { updateUserRole, toggleUserActive, createPendingUser } from "./actions";
+import { toggleUserActive, createPendingUser } from "./actions";
+import UserRoleForm from "./UserRoleForm";
 
 const ROLE_LABELS: Record<string, string> = {
   admin: "Admin",
@@ -81,21 +82,12 @@ export default async function UsersPage() {
                 <td className="p-2">{u.name}</td>
                 <td className="p-2">{u.email}</td>
                 <td className="p-2">
-                  <form
-                    action={updateUserRole.bind(null, u.id)}
-                    className="flex items-center gap-2"
-                  >
-                    <select name="role" defaultValue={u.role} className="input">
-                      {userRole.enumValues.map((r) => (
-                        <option key={r} value={r}>
-                          {ROLE_LABELS[r]}
-                        </option>
-                      ))}
-                    </select>
-                    <button type="submit" className="link-action">
-                      Guardar
-                    </button>
-                  </form>
+                  <UserRoleForm
+                    userId={u.id}
+                    currentRole={u.role}
+                    roles={userRole.enumValues}
+                    labels={ROLE_LABELS}
+                  />
                 </td>
                 <td className="p-2">
                   <form action={toggleUserActive.bind(null, u.id, !u.isActive)}>
