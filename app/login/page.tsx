@@ -20,7 +20,7 @@ export default async function LoginPage({
         </p>
       </div>
 
-      <div className="flex flex-1 items-center justify-center bg-white px-6 py-16 dark:bg-brand-900 sm:px-12">
+      <div className="bg-pattern flex flex-1 items-center justify-center px-6 py-16 sm:px-12">
         <div className="w-full max-w-sm rounded-2xl border border-brand-100 bg-white p-8 shadow-sm dark:border-brand-800 dark:bg-brand-950">
           <h2 className="text-lg font-semibold text-brand-900 dark:text-white">Ingresar</h2>
           <p className="mt-1 text-sm text-zinc-500 dark:text-brand-300">

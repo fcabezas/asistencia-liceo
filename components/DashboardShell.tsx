@@ -63,7 +63,7 @@ export default function DashboardShell({
                 <Link
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className={`block rounded px-3 py-2 text-sm transition-colors ${
+                  className={`block rounded px-3 py-3 text-sm transition-colors md:py-2 ${
                     active
                       ? "bg-gold-500 font-semibold text-brand-950"
                       : "text-brand-100 hover:bg-brand-800"
@@ -77,7 +77,7 @@ export default function DashboardShell({
         </ul>
       </nav>
 
-      <main className="min-w-0 flex-1 bg-white dark:bg-brand-950">{children}</main>
+      <main className="bg-pattern min-w-0 flex-1">{children}</main>
     </div>
   );
 }
