@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { courses, subjects, users, scheduleBlocks } from "@/db/schema";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { createScheduleBlock, updateScheduleBlock, deleteScheduleBlock } from "./actions";
+import { TrashIcon } from "@/components/icons";
 
 const DAYS: { value: number; label: string; blocks: number }[] = [
   { value: 1, label: "Lunes", blocks: 9 },
@@ -158,8 +159,9 @@ export default async function SchedulePage({
                               <button
                                 type="submit"
                                 formAction={deleteScheduleBlock.bind(null, existing.id)}
-                                className="text-red-700 hover:underline dark:text-red-300"
+                                className="inline-flex items-center gap-1 text-red-700 hover:underline"
                               >
+                                <TrashIcon className="h-3.5 w-3.5" />
                                 Eliminar
                               </button>
                             </div>

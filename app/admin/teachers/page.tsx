@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { users, courses, subjects, teacherCourseSubjects } from "@/db/schema";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { createTeacherAssignment, deleteTeacherAssignment } from "./actions";
+import { TrashIcon } from "@/components/icons";
 
 export default async function TeachersPage() {
   const [teachers, allCourses, allSubjects, assignments, settings] =
@@ -58,6 +59,7 @@ export default async function TeachersPage() {
                 <td className="p-2">
                   <form action={deleteTeacherAssignment.bind(null, a.id)}>
                     <button className="btn-danger" type="submit">
+                      <TrashIcon className="h-3.5 w-3.5" />
                       Quitar
                     </button>
                   </form>

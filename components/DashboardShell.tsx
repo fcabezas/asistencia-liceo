@@ -5,7 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 
-type NavLink = { href: string; label: string };
+type NavLink = {
+  href: string;
+  label: string;
+  icon?: React.ReactNode;
+};
 
 export default function DashboardShell({
   title,
@@ -63,12 +67,13 @@ export default function DashboardShell({
                 <Link
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className={`block rounded px-3 py-3 text-sm transition-colors md:py-2 ${
+                  className={`flex items-center gap-2.5 rounded px-3 py-3 text-sm transition-colors md:py-2 ${
                     active
                       ? "bg-gold-500 font-semibold text-brand-950"
                       : "text-brand-100 hover:bg-brand-800"
                   }`}
                 >
+                  {l.icon}
                   {l.label}
                 </Link>
               </li>

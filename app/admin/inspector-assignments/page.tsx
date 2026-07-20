@@ -5,6 +5,7 @@ import {
   createInspectorAssignment,
   deleteInspectorAssignment,
 } from "./actions";
+import { TrashIcon } from "@/components/icons";
 
 export default async function InspectorAssignmentsPage() {
   const [inspectors, allCourses, assignments] = await Promise.all([
@@ -52,6 +53,7 @@ export default async function InspectorAssignmentsPage() {
                 <td className="p-2">
                   <form action={deleteInspectorAssignment.bind(null, a.id)}>
                     <button className="btn-danger" type="submit">
+                      <TrashIcon className="h-3.5 w-3.5" />
                       Quitar
                     </button>
                   </form>

@@ -1,6 +1,13 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import DashboardShell from "@/components/DashboardShell";
+import {
+  AlertCircleIcon,
+  ChatIcon,
+  FileCheckIcon,
+  SwapIcon,
+  BellAlertIcon,
+} from "@/components/icons";
 
 export default async function InspectorLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -9,13 +16,15 @@ export default async function InspectorLayout({ children }: { children: React.Re
     redirect("/login");
   }
 
+  const iconClass = "shrink-0";
+
   const links = [
-    { href: "/inspector/dashboard", label: "Asistencia no tomada" },
-    { href: "/inspector/pending", label: "Avisos pendientes" },
-    { href: "/inspector/justifications", label: "Justificaciones" },
-    { href: "/inspector/substitutes", label: "Reemplazos (PIE)" },
+    { href: "/inspector/dashboard", label: "Asistencia no tomada", icon: <AlertCircleIcon className={iconClass} /> },
+    { href: "/inspector/pending", label: "Avisos pendientes", icon: <ChatIcon className={iconClass} /> },
+    { href: "/inspector/justifications", label: "Justificaciones", icon: <FileCheckIcon className={iconClass} /> },
+    { href: "/inspector/substitutes", label: "Reemplazos (PIE)", icon: <SwapIcon className={iconClass} /> },
     ...(role === "inspector_general"
-      ? [{ href: "/inspector/notifications", label: "Notificaciones fallidas" }]
+      ? [{ href: "/inspector/notifications", label: "Notificaciones fallidas", icon: <BellAlertIcon className={iconClass} /> }]
       : []),
   ];
 

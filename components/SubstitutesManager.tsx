@@ -4,6 +4,7 @@ import { and, asc, eq, gte, inArray } from "drizzle-orm";
 import { getScopedCourses } from "@/lib/inspector-scope";
 import { chileToday } from "@/lib/date";
 import { activateSubstitute, cancelSubstitute } from "@/app/inspector/substitutes/actions";
+import { TrashIcon } from "@/components/icons";
 
 export default async function SubstitutesManager({
   role,
@@ -143,6 +144,7 @@ export default async function SubstitutesManager({
                 <td className="p-2">
                   <form action={cancelSubstitute.bind(null, a.id)}>
                     <button className="btn-danger" type="submit">
+                      <TrashIcon className="h-3.5 w-3.5" />
                       Quitar
                     </button>
                   </form>

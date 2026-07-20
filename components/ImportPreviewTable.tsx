@@ -6,6 +6,7 @@ import {
   commitStudentsImport,
 } from "@/app/admin/students/import/actions";
 import type { ImportPreview } from "@/lib/csv-import";
+import { CheckIcon } from "@/components/icons";
 
 export default function ImportStudentsForm() {
   const [csvText, setCsvText] = useState<string>("");
@@ -150,6 +151,7 @@ export default function ImportStudentsForm() {
             disabled={busy || preview.validCount === 0}
             className="btn-success w-fit"
           >
+            {!busy && <CheckIcon className="h-4 w-4" />}
             {busy ? "Importando..." : `Confirmar import (${preview.validCount} filas)`}
           </button>
         </div>
