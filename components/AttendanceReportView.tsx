@@ -56,7 +56,7 @@ export default async function AttendanceReportView({
       </p>
 
       <div className="mt-4 max-w-2xl overflow-x-auto rounded-lg border border-zinc-200 dark:border-brand-800">
-        <table className="w-full text-left text-sm">
+        <table className="table w-full text-left text-sm">
           <thead className="bg-zinc-50 dark:bg-brand-900">
             <tr>
               <th className="p-2">Estudiante</th>

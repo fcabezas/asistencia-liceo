@@ -189,3 +189,29 @@ body {
 .input-sm {
   padding: 0.125rem 0.25rem;
 }
+
+/* Estilo unificado de tabla: encabezado marcado, franjas alternadas y
+   resalte al pasar el mouse. Se aplica por estructura (thead/tbody), así
+   las filas y celdas existentes no necesitan tocarse una por una. No se usa
+   en tablas donde el color de fila ya tiene un significado propio (ej.
+   listas de solo elementos con error/fallidos). */
+.table {
+  border-collapse: collapse;
+}
+.table thead {
+  background-color: #fafafa;
+}
+.table thead th {
+  border-bottom: 1px solid #e4e4e7;
+  font-weight: 600;
+}
+.table tbody tr {
+  border-bottom: 1px solid #e4e4e7;
+  transition: background-color 100ms ease;
+}
+.table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+.table tbody tr:hover {
+  background-color: #f4f4f5;
+}

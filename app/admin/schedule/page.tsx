@@ -92,7 +92,7 @@ export default async function SchedulePage({
 
       {selectedCourseId && (
         <div className="mt-6 overflow-x-auto rounded-lg border border-zinc-200 dark:border-brand-800">
-          <table className="w-full border-collapse text-left text-xs">
+          <table className="table w-full border-collapse text-left text-xs">
             <thead>
               <tr className="border-b bg-zinc-50 dark:bg-brand-900">
                 <th className="w-16 border-r p-2 dark:border-brand-800">Bloque</th>

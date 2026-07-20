@@ -124,7 +124,7 @@ export default async function SubstitutesManager({
       )}
 
       <div className="mt-8 max-w-3xl overflow-x-auto rounded-lg border border-zinc-200 dark:border-brand-800">
-        <table className="w-full text-left text-sm">
+        <table className="table w-full text-left text-sm">
           <thead>
             <tr className="border-b">
               <th className="p-2">Fecha</th>

@@ -17,7 +17,7 @@ export default async function CoursesPage() {
       <section>
         <h1 className="text-xl font-semibold text-brand-900 dark:text-white">Cursos</h1>
         <div className="mt-4 max-w-2xl overflow-x-auto rounded-lg border border-zinc-200 dark:border-brand-800">
-          <table className="w-full text-left text-sm">
+          <table className="table w-full text-left text-sm">
             <thead className="bg-zinc-50 dark:bg-brand-900">
               <tr>
                 <th className="p-2">Nombre</th>
