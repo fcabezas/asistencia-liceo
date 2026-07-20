@@ -3,9 +3,9 @@ import { db } from "@/db";
 import { courses, inspectorCourseAssignments } from "@/db/schema";
 import { and, asc, eq, inArray } from "drizzle-orm";
 
-/** Courses an inspector can act on: all of them for inspector_general, only assigned ones for inspector_pasillo. */
+/** Courses an inspector can act on: all of them for inspector_general/admin, only assigned ones for inspector_pasillo. */
 export async function getScopedCourses(role: string, inspectorId: number) {
-  if (role === "inspector_general") {
+  if (role === "inspector_general" || role === "admin") {
     return db.select().from(courses).where(eq(courses.isActive, true)).orderBy(asc(courses.name));
   }
 

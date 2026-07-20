@@ -9,7 +9,7 @@ import { isoWeekdayOf } from "@/lib/date";
 import { getScopedCourses } from "@/lib/inspector-scope";
 
 export async function activateSubstitute(formData: FormData) {
-  const session = await requireRole("inspector_general", "inspector_pasillo");
+  const session = await requireRole("inspector_general", "inspector_pasillo", "admin");
   const inspectorId = Number(session.user.id);
 
   const courseId = Number(formData.get("courseId"));
@@ -57,10 +57,11 @@ export async function activateSubstitute(formData: FormData) {
     });
 
   revalidatePath("/inspector/substitutes");
+  revalidatePath("/admin/substitutes");
 }
 
 export async function cancelSubstitute(id: number) {
-  const session = await requireRole("inspector_general", "inspector_pasillo");
+  const session = await requireRole("inspector_general", "inspector_pasillo", "admin");
   const inspectorId = Number(session.user.id);
 
   const row = await db.query.substituteAssignments.findFirst({
@@ -77,4 +78,5 @@ export async function cancelSubstitute(id: number) {
 
   await db.delete(substituteAssignments).where(eq(substituteAssignments.id, id));
   revalidatePath("/inspector/substitutes");
+  revalidatePath("/admin/substitutes");
 }

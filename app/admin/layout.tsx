@@ -12,6 +12,7 @@ const links = [
   { href: "/admin/schedule", label: "Horario" },
   { href: "/admin/bell-schedule", label: "Horas de bloque" },
   { href: "/admin/teachers", label: "Profesores y asignaciones" },
+  { href: "/admin/substitutes", label: "Reemplazos (PIE)" },
   { href: "/admin/inspector-assignments", label: "Inspectores de pasillo" },
   { href: "/admin/users", label: "Usuarios y roles" },
   { href: "/admin/notifications", label: "Notificaciones fallidas" },
