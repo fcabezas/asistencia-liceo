@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { courses } from "@/db/schema";
 import { asc } from "drizzle-orm";
 import { getAttendanceSummary } from "@/lib/reports";
+import StatCard from "@/components/StatCard";
 
 function defaultDateRange() {
   const now = new Date();
@@ -23,6 +24,18 @@ export default async function AttendanceReportView({
   const endDate = searchParams.endDate || defaults.end;
 
   const summary = courseId ? await getAttendanceSummary(courseId, startDate, endDate) : [];
+
+  const totals = summary.reduce(
+    (acc, s) => ({
+      presente: acc.presente + s.presente,
+      ausente: acc.ausente + s.ausente,
+      atraso: acc.atraso + s.atraso,
+      justificado: acc.justificado + s.justificado,
+    }),
+    { presente: 0, ausente: 0, atraso: 0, justificado: 0 }
+  );
+  const totalRecords = totals.presente + totals.ausente + totals.atraso + totals.justificado;
+  const attendanceRate = totalRecords > 0 ? Math.round(((totalRecords - totals.ausente) / totalRecords) * 100) : null;
 
   return (
     <div>
@@ -54,6 +67,20 @@ export default async function AttendanceReportView({
         Conteo basado en la asistencia de bloque 1 (la que dispara avisos a
         los apoderados), no incluye el detalle de bloques posteriores.
       </p>
+
+      {totalRecords > 0 && (
+        <div className="mt-4 grid max-w-2xl grid-cols-2 gap-4 sm:grid-cols-3">
+          <StatCard
+            label="Asistencia del período"
+            value={attendanceRate !== null ? `${attendanceRate}%` : "—"}
+            accent={attendanceRate !== null && attendanceRate < 90 ? "red" : "green"}
+          />
+          <StatCard label="Ausencias" value={totals.ausente} accent={totals.ausente > 0 ? "red" : "green"} />
+          <StatCard label="Atrasos" value={totals.atraso} accent={totals.atraso > 0 ? "gold" : "green"} />
+          <StatCard label="Justificados" value={totals.justificado} accent="brand" />
+          <StatCard label="Registros totales" value={totalRecords} accent="brand" />
+        </div>
+      )}
 
       <div className="mt-4 max-w-2xl overflow-x-auto rounded-lg border border-zinc-200 dark:border-brand-800">
         <table className="table w-full text-left text-sm">
