@@ -197,3 +197,12 @@ export function LogOutIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function TagIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M12.5 3.5h5a1 1 0 0 1 1 1v5a1 1 0 0 1-.3.7l-8 8a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 0-1.4l8-8a1 1 0 0 1 .7-.3z" />
+      <circle cx="16.5" cy="7.5" r="1.2" />
+    </svg>
+  );
+}

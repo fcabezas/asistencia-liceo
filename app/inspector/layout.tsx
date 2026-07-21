@@ -9,6 +9,7 @@ import {
   BellAlertIcon,
   BarChartIcon,
   LogOutIcon,
+  TagIcon,
 } from "@/components/icons";
 
 export default async function InspectorLayout({ children }: { children: React.ReactNode }) {
@@ -28,6 +29,7 @@ export default async function InspectorLayout({ children }: { children: React.Re
     { href: "/inspector/exits", label: "Retiros", icon: <LogOutIcon className={iconClass} /> },
     ...(role === "inspector_general"
       ? [
+          { href: "/inspector/students", label: "Etiquetas", icon: <TagIcon className={iconClass} /> },
           { href: "/inspector/notifications", label: "Notificaciones fallidas", icon: <BellAlertIcon className={iconClass} /> },
           { href: "/inspector/reports", label: "Reportes", icon: <BarChartIcon className={iconClass} /> },
         ]

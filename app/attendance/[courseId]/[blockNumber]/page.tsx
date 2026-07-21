@@ -14,6 +14,7 @@ import {
 import { and, asc, eq, gte, inArray, lte } from "drizzle-orm";
 import { chileToday } from "@/lib/date";
 import AttendanceGrid from "@/components/AttendanceGrid";
+import { getActiveTagsForStudents, TAG_TYPE_LABELS } from "@/lib/student-tags";
 
 export default async function AttendancePage({
   params,
@@ -129,6 +130,14 @@ export default async function AttendancePage({
     }
   }
 
+  const activeTags = await getActiveTagsForStudents(studentIds, date);
+  const tagsByStudent: Record<number, { id: number; text: string }[]> = {};
+  for (const tag of activeTags) {
+    const label = TAG_TYPE_LABELS[tag.tagType] ?? tag.tagType;
+    const text = tag.tagType === "pase_ingreso" && tag.untilTime ? `${label} (hasta ${tag.untilTime})` : tag.label ? `${label}: ${tag.label}` : label;
+    (tagsByStudent[tag.studentId] ??= []).push({ id: tag.id, text });
+  }
+
   // If this block was already taken, use its own values. Otherwise, prefill
   // with the latest status from an earlier block today so teachers only have
   // to confirm/adjust exceptions instead of starting from scratch each time.
@@ -172,6 +181,7 @@ export default async function AttendancePage({
           justifiedStudentIds={justifiedStudentIds}
           carriedOver={carriedOver}
           exitedStudents={exitedStudents}
+          studentTags={tagsByStudent}
         />
       </div>
     </div>

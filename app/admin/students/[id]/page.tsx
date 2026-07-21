@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { students, courses, guardians } from "@/db/schema";
 import { asc, eq } from "drizzle-orm";
 import { updateStudent } from "./actions";
+import StudentTagsManager from "@/components/StudentTagsManager";
 
 export default async function EditStudentPage({
   params,
@@ -79,6 +80,11 @@ export default async function EditStudentPage({
           Guardar
         </button>
       </form>
+
+      <hr className="my-6 max-w-2xl" />
+      <div className="max-w-2xl">
+        <StudentTagsManager studentId={studentId} />
+      </div>
     </div>
   );
 }

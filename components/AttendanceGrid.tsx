@@ -20,6 +20,7 @@ export default function AttendanceGrid({
   justifiedStudentIds,
   carriedOver,
   exitedStudents,
+  studentTags,
 }: {
   courseId: number;
   blockNumber: number;
@@ -28,6 +29,7 @@ export default function AttendanceGrid({
   justifiedStudentIds: number[];
   carriedOver: boolean;
   exitedStudents: Record<number, { exitTime: string; reason: string }>;
+  studentTags: Record<number, { id: number; text: string }[]>;
 }) {
   const editableStudents = students.filter((s) => !justifiedStudentIds.includes(s.id));
   const justifiedStudents = students.filter((s) => justifiedStudentIds.includes(s.id));
@@ -79,6 +81,14 @@ export default function AttendanceGrid({
                   Retirado {exitedStudents[s.id].exitTime} — {exitedStudents[s.id].reason}
                 </span>
               )}
+              {(studentTags[s.id] ?? []).map((tag) => (
+                <span
+                  key={tag.id}
+                  className="ml-2 inline-flex items-center rounded bg-brand-100 px-1.5 py-0.5 text-xs font-medium text-brand-800 dark:bg-brand-800 dark:text-brand-100"
+                >
+                  {tag.text}
+                </span>
+              ))}
             </span>
             <div className="flex flex-wrap gap-1">
               {OPTIONS.map((opt) => (
