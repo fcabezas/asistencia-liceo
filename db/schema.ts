@@ -51,6 +51,13 @@ export const notificationLogStatus = pgEnum("notification_log_status", [
 
 export const dayGroup = pgEnum("day_group", ["lunes_jueves", "viernes"]);
 
+export const studentTagType = pgEnum("student_tag_type", [
+  "pase_ingreso",
+  "condicion_especial",
+  "internado",
+  "colacion",
+]);
+
 export const schoolSettings = pgTable("school_settings", {
   id: integer("id").primaryKey().default(1),
   name: text("name").notNull(),
@@ -104,6 +111,18 @@ export const inspectorCourseAssignments = pgTable(
   },
   (t) => [uniqueIndex("ica_unique").on(t.inspectorId, t.courseId)]
 );
+
+// Cubre el alcance de cursos de un inspector_pasillo ausente con otro
+// inspector, por un rango de fechas, sin modificar inspector_course_assignments.
+export const inspectorSubstituteAssignments = pgTable("inspector_substitute_assignments", {
+  id: serial("id").primaryKey(),
+  absentInspectorId: integer("absent_inspector_id").notNull().references(() => users.id),
+  substituteInspectorId: integer("substitute_inspector_id").notNull().references(() => users.id),
+  startDate: date("start_date").notNull(),
+  endDate: date("end_date").notNull(),
+  createdBy: integer("created_by").notNull().references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
 
 export const scheduleBlocks = pgTable(
   "schedule_blocks",
@@ -190,6 +209,35 @@ export const students = pgTable(
     uniqueIndex("student_identifier_unique").on(t.identifierType, t.identifier),
   ]
 );
+
+// Registro interno de retiro anticipado durante la jornada (no envía aviso
+// al apoderado; se asume que es quien retira o autoriza el retiro).
+export const studentExits = pgTable("student_exits", {
+  id: serial("id").primaryKey(),
+  studentId: integer("student_id").notNull().references(() => students.id),
+  date: date("date").notNull(),
+  exitTime: time("exit_time").notNull(),
+  reason: text("reason").notNull(),
+  registeredBy: integer("registered_by").notNull().references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// Etiquetas de estudiante: pase de ingreso (hora informativa, no automatiza
+// la asistencia), condición especial, internado, colación. untilTime solo
+// aplica a "pase_ingreso"; validFrom/validUntil son opcionales (null =
+// vigente indefinidamente).
+export const studentTags = pgTable("student_tags", {
+  id: serial("id").primaryKey(),
+  studentId: integer("student_id").notNull().references(() => students.id),
+  tagType: studentTagType("tag_type").notNull(),
+  label: text("label"),
+  notes: text("notes"),
+  untilTime: time("until_time"),
+  validFrom: date("valid_from"),
+  validUntil: date("valid_until"),
+  createdBy: integer("created_by").notNull().references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
 
 export const justifications = pgTable("justifications", {
   id: serial("id").primaryKey(),
