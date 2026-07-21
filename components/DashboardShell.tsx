@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
+import { signOutAction } from "@/lib/auth-actions";
+import { LogOutIcon } from "@/components/icons";
 
 type NavLink = {
   href: string;
@@ -80,6 +82,16 @@ export default function DashboardShell({
             );
           })}
         </ul>
+
+        <form action={signOutAction} className="mt-4 border-t border-brand-800 pt-4">
+          <button
+            type="submit"
+            className="flex w-full items-center gap-2.5 rounded px-3 py-3 text-sm text-brand-100 transition-colors hover:bg-brand-800 md:py-2"
+          >
+            <LogOutIcon className="shrink-0" />
+            Cerrar sesión
+          </button>
+        </form>
       </nav>
 
       <main className="bg-pattern min-w-0 flex-1">{children}</main>
