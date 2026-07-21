@@ -206,3 +206,16 @@ export function TagIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function UserSwapIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <circle cx="8" cy="8" r="3" />
+      <path d="M3 20v-1a5 5 0 0 1 5-5h1" />
+      <path d="M14 8h6" />
+      <path d="M17 5l3 3-3 3" />
+      <path d="M20 16h-6" />
+      <path d="M17 19l-3-3 3-3" />
+    </svg>
+  );
+}

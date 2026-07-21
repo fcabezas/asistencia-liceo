@@ -17,6 +17,7 @@ import {
   BellAlertIcon,
   BarChartIcon,
   LogOutIcon,
+  UserSwapIcon,
 } from "@/components/icons";
 
 const iconClass = "shrink-0";
@@ -34,6 +35,7 @@ const links = [
   { href: "/admin/substitutes", label: "Reemplazos", icon: <SwapIcon className={iconClass} /> },
   { href: "/admin/exits", label: "Retiros", icon: <LogOutIcon className={iconClass} /> },
   { href: "/admin/inspector-assignments", label: "Inspectores de pasillo", icon: <ShieldIcon className={iconClass} /> },
+  { href: "/admin/inspector-substitutes", label: "Suplencia entre inspectores", icon: <UserSwapIcon className={iconClass} /> },
   { href: "/admin/users", label: "Usuarios y roles", icon: <KeyIcon className={iconClass} /> },
   { href: "/admin/notifications", label: "Notificaciones fallidas", icon: <BellAlertIcon className={iconClass} /> },
   { href: "/admin/reports", label: "Reportes", icon: <BarChartIcon className={iconClass} /> },
