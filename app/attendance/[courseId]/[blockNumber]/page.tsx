@@ -9,6 +9,7 @@ import {
   courses,
   subjects,
   substituteAssignments,
+  studentExits,
 } from "@/db/schema";
 import { and, asc, eq, gte, inArray, lte } from "drizzle-orm";
 import { chileToday } from "@/lib/date";
@@ -87,7 +88,7 @@ export default async function AttendancePage({
 
   const studentIds = courseStudents.map((s) => s.id);
 
-  const [todayRecords, activeJustifications] = await Promise.all([
+  const [todayRecords, activeJustifications, todayExits] = await Promise.all([
     studentIds.length
       ? db
           .select()
@@ -111,7 +112,22 @@ export default async function AttendancePage({
             )
           )
       : [],
+    studentIds.length
+      ? db
+          .select()
+          .from(studentExits)
+          .where(and(eq(studentExits.date, date), inArray(studentExits.studentId, studentIds)))
+      : [],
   ]);
+
+  // Solo es relevante para bloques que ocurren después de la hora de retiro
+  // registrada (si el bloque no tiene hora definida, se muestra igual).
+  const exitedStudents: Record<number, { exitTime: string; reason: string }> = {};
+  for (const exit of todayExits) {
+    if (!block.startTime || exit.exitTime <= block.startTime) {
+      exitedStudents[exit.studentId] = { exitTime: exit.exitTime, reason: exit.reason };
+    }
+  }
 
   // If this block was already taken, use its own values. Otherwise, prefill
   // with the latest status from an earlier block today so teachers only have
@@ -155,6 +171,7 @@ export default async function AttendancePage({
           initialStatuses={initialStatuses}
           justifiedStudentIds={justifiedStudentIds}
           carriedOver={carriedOver}
+          exitedStudents={exitedStudents}
         />
       </div>
     </div>

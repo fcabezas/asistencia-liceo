@@ -16,6 +16,7 @@ import {
   KeyIcon,
   BellAlertIcon,
   BarChartIcon,
+  LogOutIcon,
 } from "@/components/icons";
 
 const iconClass = "shrink-0";
@@ -31,6 +32,7 @@ const links = [
   { href: "/admin/bell-schedule", label: "Horas de bloque", icon: <ClockIcon className={iconClass} /> },
   { href: "/admin/teachers", label: "Profesores y asignaciones", icon: <BriefcaseIcon className={iconClass} /> },
   { href: "/admin/substitutes", label: "Reemplazos (PIE)", icon: <SwapIcon className={iconClass} /> },
+  { href: "/admin/exits", label: "Retiros", icon: <LogOutIcon className={iconClass} /> },
   { href: "/admin/inspector-assignments", label: "Inspectores de pasillo", icon: <ShieldIcon className={iconClass} /> },
   { href: "/admin/users", label: "Usuarios y roles", icon: <KeyIcon className={iconClass} /> },
   { href: "/admin/notifications", label: "Notificaciones fallidas", icon: <BellAlertIcon className={iconClass} /> },

@@ -8,6 +8,7 @@ import {
   SwapIcon,
   BellAlertIcon,
   BarChartIcon,
+  LogOutIcon,
 } from "@/components/icons";
 
 export default async function InspectorLayout({ children }: { children: React.ReactNode }) {
@@ -24,6 +25,7 @@ export default async function InspectorLayout({ children }: { children: React.Re
     { href: "/inspector/pending", label: "Avisos pendientes", icon: <ChatIcon className={iconClass} /> },
     { href: "/inspector/justifications", label: "Justificaciones", icon: <FileCheckIcon className={iconClass} /> },
     { href: "/inspector/substitutes", label: "Reemplazos (PIE)", icon: <SwapIcon className={iconClass} /> },
+    { href: "/inspector/exits", label: "Retiros", icon: <LogOutIcon className={iconClass} /> },
     ...(role === "inspector_general"
       ? [
           { href: "/inspector/notifications", label: "Notificaciones fallidas", icon: <BellAlertIcon className={iconClass} /> },
