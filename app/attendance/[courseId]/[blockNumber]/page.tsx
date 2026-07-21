@@ -26,7 +26,9 @@ export default async function AttendancePage({
   if (
     session.user.role !== "teacher" &&
     session.user.role !== "admin" &&
-    session.user.role !== "pie"
+    session.user.role !== "pie" &&
+    session.user.role !== "inspector_general" &&
+    session.user.role !== "inspector_pasillo"
   ) {
     redirect("/dashboard");
   }

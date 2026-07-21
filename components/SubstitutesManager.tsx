@@ -6,6 +6,14 @@ import { chileToday } from "@/lib/date";
 import { activateSubstitute, cancelSubstitute } from "@/app/inspector/substitutes/actions";
 import { TrashIcon } from "@/components/icons";
 
+const SUBSTITUTE_ROLES = ["pie", "inspector_general", "inspector_pasillo"] as const;
+
+const ROLE_LABELS: Record<string, string> = {
+  pie: "PIE",
+  inspector_general: "Inspector general",
+  inspector_pasillo: "Inspector de pasillo",
+};
+
 export default async function SubstitutesManager({
   role,
   userId,
@@ -15,12 +23,12 @@ export default async function SubstitutesManager({
 }) {
   const { date: today } = chileToday();
 
-  const [scopedCourses, pieStaff] = await Promise.all([
+  const [scopedCourses, candidates] = await Promise.all([
     getScopedCourses(role, userId),
     db
       .select()
       .from(users)
-      .where(and(eq(users.role, "pie"), eq(users.isActive, true)))
+      .where(and(inArray(users.role, SUBSTITUTE_ROLES), eq(users.isActive, true)))
       .orderBy(asc(users.name)),
   ]);
 
@@ -47,27 +55,29 @@ export default async function SubstitutesManager({
 
   const courseName = (id: number) =>
     scopedCourses.find((c) => c.id === id)?.name ?? id;
-  const pieName = (id: number) =>
-    pieStaff.find((p) => p.id === id)?.name ?? id;
+  const candidateName = (id: number) => {
+    const c = candidates.find((p) => p.id === id);
+    return c ? `${c.name} (${ROLE_LABELS[c.role] ?? c.role})` : id;
+  };
 
   return (
     <div className="p-4 sm:p-8">
       <h1 className="text-xl font-semibold text-brand-900 dark:text-white">
-        Reemplazos (PIE)
+        Reemplazos
       </h1>
       <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-brand-300">
-        Activa a una persona de PIE para cubrir un bloque puntual cuando falte
-        el profesor habitual. No modifica el horario fijo: solo habilita ese
-        bloque, ese día, para esa persona.
+        Activa a una persona de PIE o a un inspector para cubrir un bloque
+        puntual cuando falte el profesor habitual. No modifica el horario
+        fijo: solo habilita ese bloque, ese día, para esa persona.
       </p>
 
       {scopedCourses.length === 0 ? (
         <p className="mt-4 text-zinc-600 dark:text-brand-300">
           No hay cursos disponibles todavía.
         </p>
-      ) : pieStaff.length === 0 ? (
+      ) : candidates.length === 0 ? (
         <p className="mt-4 text-sm text-zinc-500 dark:text-brand-300">
-          Aún no hay usuarios con rol &quot;PIE&quot;: agrégalos primero en
+          Aún no hay usuarios con rol PIE o inspector: agrégalos primero en
           Usuarios y roles (deben haber iniciado sesión con Google al menos
           una vez).
         </p>
@@ -108,11 +118,11 @@ export default async function SubstitutesManager({
             />
           </div>
           <div>
-            <label className="label">Profesor PIE</label>
+            <label className="label">Reemplazo</label>
             <select name="substituteTeacherId" className="input" required>
-              {pieStaff.map((p) => (
+              {candidates.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.name}
+                  {p.name} ({ROLE_LABELS[p.role] ?? p.role})
                 </option>
               ))}
             </select>
@@ -130,7 +140,7 @@ export default async function SubstitutesManager({
               <th className="p-2">Fecha</th>
               <th className="p-2">Bloque</th>
               <th className="p-2">Curso</th>
-              <th className="p-2">Profesor PIE</th>
+              <th className="p-2">Reemplazo</th>
               <th className="p-2"></th>
             </tr>
           </thead>
@@ -140,7 +150,7 @@ export default async function SubstitutesManager({
                 <td className="p-2">{a.date}</td>
                 <td className="p-2">{a.blockNumber}</td>
                 <td className="p-2">{courseName(a.courseId)}</td>
-                <td className="p-2">{pieName(a.substituteTeacherId)}</td>
+                <td className="p-2">{candidateName(a.substituteTeacherId)}</td>
                 <td className="p-2">
                   <form action={cancelSubstitute.bind(null, a.id)}>
                     <button className="btn-danger" type="submit">

@@ -10,6 +10,7 @@ import {
   BarChartIcon,
   LogOutIcon,
   TagIcon,
+  ClipboardCheckIcon,
 } from "@/components/icons";
 
 export default async function InspectorLayout({ children }: { children: React.ReactNode }) {
@@ -25,7 +26,8 @@ export default async function InspectorLayout({ children }: { children: React.Re
     { href: "/inspector/dashboard", label: "Asistencia no tomada", icon: <AlertCircleIcon className={iconClass} /> },
     { href: "/inspector/pending", label: "Avisos pendientes", icon: <ChatIcon className={iconClass} /> },
     { href: "/inspector/justifications", label: "Justificaciones", icon: <FileCheckIcon className={iconClass} /> },
-    { href: "/inspector/substitutes", label: "Reemplazos (PIE)", icon: <SwapIcon className={iconClass} /> },
+    { href: "/inspector/substitutes", label: "Reemplazos", icon: <SwapIcon className={iconClass} /> },
+    { href: "/dashboard", label: "Pasar asistencia (reemplazo)", icon: <ClipboardCheckIcon className={iconClass} /> },
     { href: "/inspector/exits", label: "Retiros", icon: <LogOutIcon className={iconClass} /> },
     ...(role === "inspector_general"
       ? [
