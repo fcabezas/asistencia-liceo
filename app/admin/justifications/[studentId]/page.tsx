@@ -2,23 +2,20 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import StudentJustificationView from "@/components/StudentJustificationView";
 
-export default async function StudentJustificationPage({
+export default async function AdminStudentJustificationPage({
   params,
 }: {
   params: Promise<{ studentId: string }>;
 }) {
   const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "inspector_general" && role !== "inspector_pasillo")) {
-    redirect("/login");
-  }
+  if (!session?.user || session.user.role !== "admin") redirect("/login");
 
   const { studentId: studentIdParam } = await params;
 
   return (
     <StudentJustificationView
       studentId={Number(studentIdParam)}
-      role={role}
+      role="admin"
       userId={Number(session.user.id)}
     />
   );

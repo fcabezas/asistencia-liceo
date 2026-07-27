@@ -9,7 +9,7 @@ export async function canInspectStudent(
   inspectorId: number,
   studentId: number
 ): Promise<boolean> {
-  if (inspectorRole === "inspector_general") return true;
+  if (inspectorRole === "inspector_general" || inspectorRole === "admin") return true;
   if (inspectorRole !== "inspector_pasillo") return false;
 
   const student = await db.query.students.findFirst({ where: eq(students.id, studentId) });

@@ -7,7 +7,7 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function markAsNotified(queueId: number) {
-  const session = await requireRole("inspector_general", "inspector_pasillo");
+  const session = await requireRole("inspector_general", "inspector_pasillo", "admin");
 
   const queueRow = await db.query.notificationQueue.findFirst({
     where: eq(notificationQueue.id, queueId),
@@ -31,4 +31,5 @@ export async function markAsNotified(queueId: number) {
 
   await db.update(notificationQueue).set({ status: "done" }).where(eq(notificationQueue.id, queueId));
   revalidatePath("/inspector/pending");
+  revalidatePath("/admin/pending");
 }

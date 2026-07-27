@@ -5,7 +5,7 @@ import { canInspectStudent, createJustification } from "@/lib/justifications";
 import { revalidatePath } from "next/cache";
 
 export async function createJustificationAction(studentId: number, formData: FormData) {
-  const session = await requireRole("inspector_general", "inspector_pasillo");
+  const session = await requireRole("inspector_general", "inspector_pasillo", "admin");
   const inspectorId = Number(session.user.id);
 
   const allowed = await canInspectStudent(session.user.role, inspectorId, studentId);
@@ -35,4 +35,5 @@ export async function createJustificationAction(studentId: number, formData: For
   });
 
   revalidatePath(`/inspector/justifications/${studentId}`);
+  revalidatePath(`/admin/justifications/${studentId}`);
 }

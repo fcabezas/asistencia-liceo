@@ -2,25 +2,22 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import JustificationsSearchView from "@/components/JustificationsSearchView";
 
-export default async function JustificationsSearchPage({
+export default async function AdminJustificationsPage({
   searchParams,
 }: {
   searchParams: Promise<{ q?: string }>;
 }) {
   const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "inspector_general" && role !== "inspector_pasillo")) {
-    redirect("/login");
-  }
+  if (!session?.user || session.user.role !== "admin") redirect("/login");
 
   const { q } = await searchParams;
 
   return (
     <JustificationsSearchView
-      role={role}
+      role="admin"
       userId={Number(session.user.id)}
       q={q}
-      basePath="/inspector/justifications"
+      basePath="/admin/justifications"
     />
   );
 }

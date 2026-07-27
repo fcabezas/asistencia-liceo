@@ -18,6 +18,9 @@ import {
   BarChartIcon,
   LogOutIcon,
   UserSwapIcon,
+  AlertCircleIcon,
+  ChatIcon,
+  FileCheckIcon,
 } from "@/components/icons";
 
 const iconClass = "shrink-0";
@@ -25,6 +28,9 @@ const iconClass = "shrink-0";
 const links = [
   { href: "/admin", label: "Inicio", icon: <HomeIcon className={iconClass} /> },
   { href: "/dashboard", label: "Pasar asistencia (mis cursos)", icon: <ClipboardCheckIcon className={iconClass} /> },
+  { href: "/admin/attendance-status", label: "Asistencia no tomada", icon: <AlertCircleIcon className={iconClass} /> },
+  { href: "/admin/pending", label: "Avisos pendientes", icon: <ChatIcon className={iconClass} /> },
+  { href: "/admin/justifications", label: "Justificaciones", icon: <FileCheckIcon className={iconClass} /> },
   { href: "/admin/students", label: "Estudiantes", icon: <UsersIcon className={iconClass} /> },
   { href: "/admin/students/import", label: "Importar CSV", icon: <UploadIcon className={iconClass} /> },
   { href: "/admin/courses", label: "Cursos y asignaturas", icon: <BookIcon className={iconClass} /> },
